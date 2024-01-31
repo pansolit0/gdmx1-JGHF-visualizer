@@ -1,8 +1,9 @@
 const SPJG = [1.3, 1.3, 1.0, 1.0, 0.8, 0.6, 0.5];
 const SPHF = [5.0, 5.0, 6.0, 7.0, 8.0, 8.0, 10.0];
+const SPRO = 1.25;
 
-let diferenciasPorcentuales = { jg: [], hf: [] };
 
+let diferenciasPorcentuales = { jg: [], hf: [], ro: [] };
 function truncarADosDecimales(numero) {
     return Math.trunc(numero * 100) / 100;
 }
@@ -23,8 +24,8 @@ function solicitarDatos(celda, columnas, elementoJG, elementoHF) {
             return response.json();
         })
         .then(data => {
-            if (elementoJG) elementoJG.innerHTML = `JG: <br>${truncarADosDecimales(data.jg)}`;
-            if (elementoHF) elementoHF.innerHTML = `HF: <br>${truncarADosDecimales(data.hf)}`;
+            if (elementoJG) elementoJG.innerHTML = `<h2>JG: <br>${truncarADosDecimales(data.jg)}</h2>`;
+            if (elementoHF) elementoHF.innerHTML = `<h2>HF: <br>${truncarADosDecimales(data.hf)}</h2>`;
             evaluarYActualizarClases(data, celda - 1);
         })
         .catch(error => {
@@ -81,17 +82,47 @@ function solicitarRO(nombreCelda, elementoRO) {
             return response.json();
         })
         .then(data => {
-            elementoRO.innerHTML = `RO <br>${truncarADosDecimales(data.ro)}`;
+            elementoRO.innerHTML = `<h2>RO <br>${truncarADosDecimales(data.ro)}</h2>`;
         })
         .catch(error => {
             console.error('Error al hacer la solicitud:', error);
         });
 }
+function actualizarRO() {
+    let elementoRO = document.getElementById('valor-ro');
+    if (!elementoRO) return;
+
+    const datos = { celda: 'celda_1', columnas: ['ro'] };
+
+    fetch(apiConfig.datosChart, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datos)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            elementoRO.innerHTML = `<h2>RO: <br>${truncarADosDecimales(data.ro)}</h2>`;
+            const diferenciaRO = Math.abs(data.ro - SPRO) / SPRO;
+            diferenciasPorcentuales.ro[0] = diferenciaRO; // Asumiendo que solo hay un elemento RO
+            actualizarClase(elementoRO, diferenciaRO);
+        })
+        .catch(error => {
+            console.error('Error al hacer la solicitud:', error);
+        });
+}
+
 document.addEventListener('DOMContentLoaded', function() {    let elementoRO = document.getElementById('valor-ro');
     if (elementoRO) {
         solicitarRO('celda_1', elementoRO);
     }
-
+    actualizarRO();
     actualizarDatos();
     setInterval(actualizarDatos, 600000); // 600000 milisegundos = 10 minutos
 });

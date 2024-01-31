@@ -3,6 +3,13 @@ html, body {
     margin: 0;
 }
 
+.full {
+    width: 100%; /* Establece el ancho al máximo disponible */
+    height: auto; /* Ajusta la altura automáticamente basada en el contenido */
+    display: block; /* Asegura que el elemento se muestre como un bloque, ocupando toda la línea */
+    overflow: visible;
+}
+
 .page-wrapper {
     display: flex;
     flex-direction: column;
@@ -79,8 +86,8 @@ html, body {
 
 @media (max-width: 1366px) {
     .square {
-        width: 61px;
-        height: 61px;
+        width: 83px;
+        height: 83px;
     }
 
     @media (max-width: 1180px) {
@@ -128,6 +135,12 @@ html, body {
                                     .square {
                                         width: 75px;
                                         height: 75px;
+                                    }
+                                    @media (max-width: 360px) {
+                                        .square {
+                                            width: 63px;
+                                            height: 63px;
+                                        }
                                     }
                                 }
                             }
