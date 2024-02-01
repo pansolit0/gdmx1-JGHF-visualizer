@@ -4,7 +4,6 @@ const SPRO = 1.25;
 
 
 let diferenciasPorcentuales = { jg: [], hf: [], ro: [] };
-console.log(diferenciasPorcentuales)
 
 function truncarADosDecimales(numero) {
     return Math.trunc(numero * 100) / 100;
@@ -70,7 +69,6 @@ function evaluarYActualizarClases(data, indiceCelda) {
     actualizarClase(elementoHF, Math.abs(diferenciaHF));
     generarRecomendacion(diferenciaJG, indiceCelda, 'jg');
     generarRecomendacion(diferenciaHF, indiceCelda, 'hf');
-    console.log("Diferencias porcentuales actualizadas (JG, HF):", diferenciasPorcentuales);
 }
 
 function actualizarClase(elemento, diferencia) {
