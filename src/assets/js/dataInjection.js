@@ -1,5 +1,5 @@
-const SPJG = [1.3, 1.3, 1.0, 1.0, 0.8, 0.6, 0.5];
-const SPHF = [5.0, 5.0, 6.0, 7.0, 8.0, 8.0, 10.0];
+const SPJG = [1.30, 1.30, 1.00, 1.00, 0.80, 0.60, 0.50];
+const SPHF = [5.00, 5.00, 6.00, 7.00, 8.00, 8.00, 10.00];
 const SPRO = 1.25;
 
 
@@ -40,21 +40,24 @@ function generarRecomendacion(diferencia, indiceCelda, tipo) {
     if (Math.abs(diferencia) > 0.1) { // Si la diferencia absoluta es mayor al 10%
         let mensaje = '';
         const valorActual = tipo === 'jg' ? diferenciasPorcentuales.jg[indiceCelda] * SPJG[indiceCelda] + SPJG[indiceCelda] : diferenciasPorcentuales.hf[indiceCelda] * SPHF[indiceCelda] + SPHF[indiceCelda];
-        const diferenciaPorcentual = tipo === 'jg' ? diferenciasPorcentuales.jg[indiceCelda] : diferenciasPorcentuales.hf[indiceCelda];
+        // Calcula la mitad de la diferencia porcentual para mostrar en el mensaje, pero sigue evaluando con la diferencia total
+        const mitadDiferenciaMensaje = ((Math.abs(diferencia)) / 2).toFixed(2); // Ajuste para mostrar la mitad en el mensaje
 
-        let accion = '';
         if (tipo === 'jg') {
-            accion = diferenciaPorcentual > 0 ? `JG: abrir las válvulas ${(Math.abs(diferencia)).toFixed(2)}%, dejar salir aire` : `JG: agregar aire ${(Math.abs(diferencia)).toFixed(2)}%`;
-            mensaje = `<h5>${accion} para alcanzar SP.</h5>`;
+            // Determina si se debe bajar o subir el flujo de aire basado en la diferencia total, no en la mitad
+            const accion = valorActual > setpoint ? `baje el flujo de aire ${valorActual.toFixed(2)}m^3/h en un ${mitadDiferenciaMensaje}%` : `suba el flujo de aire ${valorActual.toFixed(2)}^m3/h en un ${mitadDiferenciaMensaje}%`;
+            mensaje = `<h5>JG: ${accion}, observe.</h5>`;
         } else if (tipo === 'hf') {
-            accion = diferenciaPorcentual > 0 ? `HF: cerrar válvulas ${(Math.abs(diferencia)).toFixed(2)}%` : `HF: abrir válvulas ${(Math.abs(diferencia)).toFixed(2)}%`;
-            mensaje = `<h5>${accion} para alcanzar SP.</h5>`;
+            // Acción basada en la diferencia total, mensaje con la mitad de la diferencia porcentual
+            const accion = valorActual > setpoint ? `cerrar válvulas de dardo ${mitadDiferenciaMensaje}%` : `abrir válvulas de dardo ${mitadDiferenciaMensaje}%`;
+            mensaje = `<h5>HF: ${accion} observe.</h5>`;
         }
         recomendacionDiv.innerHTML = mensaje;
     } else {
         recomendacionDiv.innerHTML = ''; // Limpia la recomendación si la diferencia es <= 10%
     }
 }
+
 function evaluarYActualizarClases(data, indiceCelda) {
     const elementoJG = document.getElementById(`celda${indiceCelda + 1}-jg`);
     const elementoHF = document.getElementById(`celda${indiceCelda + 1}-hf`);
