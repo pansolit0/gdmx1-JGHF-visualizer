@@ -39,18 +39,16 @@ function generarRecomendacion(diferencia, indiceCelda, tipo) {
     const recomendacionDiv = document.getElementById(`rec${tipo.toUpperCase()}C${indiceCelda + 1}`);
     if (Math.abs(diferencia) > 0.1) { // Si la diferencia absoluta es mayor al 10%
         let mensaje = '';
-        const valorActual = tipo === 'jg' ? diferenciasPorcentuales.jg[indiceCelda] * SPJG[indiceCelda] + SPJG[indiceCelda] : diferenciasPorcentuales.hf[indiceCelda] * SPHF[indiceCelda] + SPHF[indiceCelda];
-        // Calcula la mitad de la diferencia porcentual para mostrar en el mensaje, pero sigue evaluando con la diferencia total
-        const mitadDiferenciaMensaje = ((Math.abs(diferencia)) / 2).toFixed(2); // Ajuste para mostrar la mitad en el mensaje
-
         if (tipo === 'jg') {
-            // Determina si se debe bajar o subir el flujo de aire basado en la diferencia total, no en la mitad
-            const accion = valorActual > setpoint ? `baje el flujo de aire ${valorActual.toFixed(2)}m^3/h en un ${mitadDiferenciaMensaje}%` : `suba el flujo de aire ${valorActual.toFixed(2)}^m3/h en un ${mitadDiferenciaMensaje}%`;
-            mensaje = `<h5>JG: ${accion}, observe.</h5>`;
+            const valorActual = diferenciasPorcentuales.jg[indiceCelda] * SPJG[indiceCelda] + SPJG[indiceCelda];
+            const mitadDiferenciaMensaje = (((((3.14159265359 * 16) * (Math.abs(diferencia))) * 36) * 0.5).toFixed(1)); // Calcula el valor específico para el mensaje
+            const accion = valorActual > setpoint ? `bajar el flujo de aire` : `subir el flujo de aire`;
+            mensaje = `<h5>JG: ${accion} a ${mitadDiferenciaMensaje} m^3/h según la evaluación. Observe.</h5>`;
         } else if (tipo === 'hf') {
-            // Acción basada en la diferencia total, mensaje con la mitad de la diferencia porcentual
+            const valorActual = diferenciasPorcentuales.hf[indiceCelda] * SPHF[indiceCelda] + SPHF[indiceCelda];
+            const mitadDiferenciaMensaje = ((Math.abs(diferencia)).toFixed(2));
             const accion = valorActual > setpoint ? `cerrar válvulas de dardo ${mitadDiferenciaMensaje}%` : `abrir válvulas de dardo ${mitadDiferenciaMensaje}%`;
-            mensaje = `<h5>HF: ${accion} observe.</h5>`;
+            mensaje = `<h5>HF: ${accion}. Observe.</h5>`;
         }
         recomendacionDiv.innerHTML = mensaje;
     } else {
