@@ -25,8 +25,8 @@ function solicitarDatos(celda, columnas, elementoJG, elementoHF) {
             return response.json();
         })
         .then(data => {
-            if (elementoJG) elementoJG.innerHTML = `<h2>JG: <br>${truncarADosDecimales(data.jg)}</h2>`;
-            if (elementoHF) elementoHF.innerHTML = `<h2>HF: <br>${truncarADosDecimales(data.hf)}</h2>`;
+            if (elementoJG) elementoJG.innerHTML = `<h3>JG: <br>${truncarADosDecimales(data.jg)}</h3>`;
+            if (elementoHF) elementoHF.innerHTML = `<h3>HF: <br>${truncarADosDecimales(data.hf)}</h3>`;
             evaluarYActualizarClases(data, celda - 1);
         })
         .catch(error => {
@@ -41,18 +41,18 @@ function generarRecomendacion(diferencia, indiceCelda, tipo) {
         let mensaje = '';
         if (tipo === 'jg') {
             const valorActual = diferenciasPorcentuales.jg[indiceCelda] * SPJG[indiceCelda] + SPJG[indiceCelda];
-            const mitadDiferenciaMensaje = (((((3.14159265359 * 16) * (Math.abs(diferencia))) * 36) * 0.5).toFixed(1)); // Calcula el valor específico para el mensaje
+            const mitadDiferenciaMensaje = ((((3.14 * 16) * diferencia * 36)* 0.5 ).toFixed(0)); // Calcula el valor específico para el mensaje
             const accion = valorActual > setpoint ? `bajar el flujo de aire` : `subir el flujo de aire`;
-            mensaje = `<h5>JG: ${accion} a ${mitadDiferenciaMensaje} m^3/h según la evaluación. Observe.</h5>`;
+            mensaje = `<h5>JG: ${accion} un ${mitadDiferenciaMensaje} m^3/h. Observe y evalue situación.</h5>`;
         } else if (tipo === 'hf') {
             const valorActual = diferenciasPorcentuales.hf[indiceCelda] * SPHF[indiceCelda] + SPHF[indiceCelda];
             const mitadDiferenciaMensaje = ((Math.abs(diferencia)).toFixed(2));
             const accion = valorActual > setpoint ? `cerrar válvulas de dardo ${mitadDiferenciaMensaje}%` : `abrir válvulas de dardo ${mitadDiferenciaMensaje}%`;
-            mensaje = `<h5>HF: ${accion}. Observe.</h5>`;
+            mensaje = `<h5>HF: ${accion}. Observe y evalue situación.</h5>`;
         }
         recomendacionDiv.innerHTML = mensaje;
     } else {
-        recomendacionDiv.innerHTML = ''; // Limpia la recomendación si la diferencia es <= 10%
+        recomendacionDiv.innerHTML = '<h5>no existen recomendaciones por el momento.</h5>';
     }
 }
 
@@ -72,7 +72,7 @@ function evaluarYActualizarClases(data, indiceCelda) {
     generarRecomendacion(diferenciaHF, indiceCelda, 'hf');
 }
 
-function actualizarClase(elemento, diferencia) {
+function actualizarClase(elemento, diferencia, tipo = '') {
     elemento.classList.remove('btn-danger', 'btn-warning');
     if (diferencia > 0.2) {
         elemento.classList.add('btn-danger');
@@ -93,7 +93,8 @@ function actualizarDatos() {
 
 function actualizarRO() {
     let elementoRO = document.getElementById('valor-ro');
-    if (!elementoRO) return;
+    let recomendacionDiv = document.getElementById('recRO'); // Asegúrate de que este elemento existe en tu HTML
+    if (!elementoRO || !recomendacionDiv) return;
 
     const datos = { celda: 'celda_1', columnas: ['ro'] };
 
@@ -111,15 +112,27 @@ function actualizarRO() {
             return response.json();
         })
         .then(data => {
-            elementoRO.innerHTML = `<h2>RO: <br>${truncarADosDecimales(data.ro)}</h2>`;
-            const diferenciaRO = Math.abs(data.ro - SPRO) / SPRO;
-            diferenciasPorcentuales.ro[0] = diferenciaRO; // Asumiendo que solo hay un elemento RO
-            actualizarClase(elementoRO, diferenciaRO);
+            const valorActualRO = data.ro;
+            elementoRO.innerHTML = `<h2>RO: <br>${truncarADosDecimales(valorActualRO)}</h2>`;
+            const diferenciaPorcentual = Math.abs(valorActualRO - SPRO) / SPRO;
+            const ajuste = truncarADosDecimales(diferenciaPorcentual * SPRO * 0.5); // Calcula el ajuste como la mitad de la diferencia porcentual
+
+            // Evalúa si la variación porcentual es mayor o igual a 0.1 (10%)
+            if (diferenciaPorcentual >= 0.1) {
+                let accion = valorActualRO > SPRO ? 'cerrar' : 'abrir';
+                let mensaje = `<h5>Recomendación RO: Es recomendable ${accion} la palanca un ${ajuste}%.</h5>`;
+                recomendacionDiv.innerHTML = mensaje;
+            } else {
+                recomendacionDiv.innerHTML = '<h5>Recomendación RO: El valor de RO está dentro del rango aceptable.</h5>';
+            }
+
+            // Opcional: actualizarClase(elementoRO, diferenciaPorcentual);
         })
         .catch(error => {
             console.error('Error al hacer la solicitud:', error);
         });
 }
+
 
 
 document.addEventListener('DOMContentLoaded', function() {    let elementoRO = document.getElementById('valor-ro');

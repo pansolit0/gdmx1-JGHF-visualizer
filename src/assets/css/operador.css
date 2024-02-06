@@ -28,6 +28,7 @@ html, body {
     height: 100%;
 }
 
+
 .card-body {
     display: flex;
     flex-wrap: wrap;
@@ -36,142 +37,80 @@ html, body {
 }
 
 /* Adjustments for squares */
-.square {
-    width: 130px;
-    height: 130px;
-    margin: 0.5rem;
+.square, .rectangle, .rectangleFULL, .tittle {
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    margin: 0.5rem;
 }
-
 
 .rectangle {
     width: 210px;
     height: 100px;
-    margin: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
 }
 
 .rectangleFULL {
     width: 420px;
     height: 100px;
-    margin: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
 }
 
-.tittle{
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-
+.square {
+    width: 200px;
+    height: 200px;
 }
-
 
 @media (max-width: 1368px) {
     .square {
-        width: 80px;
-        height: 80px;
+        width: 63px;
+        height: 63px;
+        }
+    @media (max-width: 1366px) {
+        .square {
+            width: 100px;
+            height: 100px;
+        }
+            @media (max-width: 740px) {
+                .square {
+                    width: 98px;
+                    height: 98px;
+                }
+                @media (max-width: 720px) {
+                    .square {
+                        width: 95px;
+                        height: 95px;
+                    }
+                    @media (max-width: 653px) {
+                        .square {
+                            width: 75px;
+                            height: 75px;
+                        }
+                        @media (max-width: 430px) {
+                            .square {
+                                width: 60px;
+                                height: 60px;
+                            }
+                            @media (max-width: 414px) {
+                                .square {
+                                    width: 65px;
+                                    height: 65px;
+                                }
+                                @media (max-width: 390px) {
+                                    .square {
+                                        width: 50px;
+                                        height: 50px;
+                                    }
+                                    @media (max-width: 360px) {
+                                        .square {
+                                            width: 52px;
+                                            height: 52px;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
-}
-
-@media (max-width: 1280px) {
-    .square {
-        width: 71px;
-        height: 71px;
-    }
-}
-
-@media (max-width: 1080px) {
-    .square {
-        width: 95px; /* Adjusted once for multiple similar ranges */
-        height: 95px;
-    }
-}
-
-@media (max-width: 980px) {
-    .square {
-        width: 86px;
-        height: 86px;
-    }
-}
-
-@media (max-width: 896px) {
-    .square {
-        width: 77px;
-        height: 77px;
-    }
-}
-
-@media (max-width: 844px) {
-    .square {
-        width: 70px;
-        height: 70px;
-    }
-}
-
-@media (max-width: 768px) {
-    .square {
-        width: 60px;
-        height: 60px;
-    }
-}
-
-@media (max-width: 740px) {
-    .square {
-        width: 105px;
-        height: 105px;
-    }
-}
-
-@media (max-width: 667px) {
-    .square {
-        width: 95px; /* Reuse this value for simplicity */
-        height: 95px;
-    }
-}
-
-@media (max-width: 430px) {
-    .square {
-        width: 76px;
-        height: 76px;
-    }
-}
-
-@media (max-width: 412px) {
-    .square {
-        width: 66px;
-        height: 66px;
-    }
-}
-
-@media (max-width: 360px) {
-    .square {
-        width: 58px;
-        height: 58px;
-    }
-}
-
-@media (max-width: 345px) {
-    .square {
-        width: 58px;
-        height: 58px;
-    }
-}
-
-@media (max-width: 280px) {
-    .square {
-        width: 55px;
-        height: 55px;
-    }
-}
-
-
-
