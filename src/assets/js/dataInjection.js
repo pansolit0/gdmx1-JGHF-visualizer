@@ -25,8 +25,8 @@ function solicitarDatos(celda, columnas, elementoJG, elementoHF) {
             return response.json();
         })
         .then(data => {
-            if (elementoJG) elementoJG.innerHTML = `<h2>JG: <br>${truncarADosDecimales(data.jg)}</h2>`;
-            if (elementoHF) elementoHF.innerHTML = `<h2>HF: <br>${truncarADosDecimales(data.hf)}</h2>`;
+            if (elementoJG) elementoJG.innerHTML = `<h3>JG: <br>${truncarADosDecimales(data.jg)}</h3>`;
+            if (elementoHF) elementoHF.innerHTML = `<h3>HF: <br>${truncarADosDecimales(data.hf)}</h3>`;
             evaluarYActualizarClases(data, celda - 1);
         })
         .catch(error => {
