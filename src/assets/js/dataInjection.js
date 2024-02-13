@@ -34,27 +34,53 @@ function solicitarDatos(celda, columnas, elementoJG, elementoHF) {
         });
 }
 
-function generarRecomendacion(diferencia, indiceCelda, tipo) {
+
+
+function generarRecomendacion(diferencia, indiceCelda, tipo , data) {
+
+
+    // Definir el setpoint basado en el tipo.
     const setpoint = tipo === 'jg' ? SPJG[indiceCelda] : SPHF[indiceCelda];
+
+    // Obtener el elemento del DOM donde se mostrará la recomendación.
     const recomendacionDiv = document.getElementById(`rec${tipo.toUpperCase()}C${indiceCelda + 1}`);
-    if (Math.abs(diferencia) > 0.1) { // Si la diferencia absoluta es mayor al 10%
-        let mensaje = '';
-        if (tipo === 'jg') {
-            const valorActual = diferenciasPorcentuales.jg[indiceCelda] * SPJG[indiceCelda] + SPJG[indiceCelda];
-            const mitadDiferenciaMensaje = ((((3.14 * 16) * diferencia * 36)* 0.5 ).toFixed(0)); // Calcula el valor específico para el mensaje
-            const accion = valorActual > setpoint ? `bajar el flujo de aire` : `subir el flujo de aire`;
-            mensaje = `<h5>JG: ${accion} un ${mitadDiferenciaMensaje} m^3/h. Observe y evalue situación.</h5>`;
-        } else if (tipo === 'hf') {
-            const valorActual = diferenciasPorcentuales.hf[indiceCelda] * SPHF[indiceCelda] + SPHF[indiceCelda];
-            const mitadDiferenciaMensaje = ((Math.abs(diferencia)).toFixed(2));
-            const accion = valorActual > setpoint ? `cerrar válvulas de dardo ${mitadDiferenciaMensaje}%` : `abrir válvulas de dardo ${mitadDiferenciaMensaje}%`;
-            mensaje = `<h5>HF: ${accion}. Observe y evalue situación.</h5>`;
-        }
+
+    // Comprobar si la diferencia es mayor al 10%.
+    if (Math.abs(diferencia) > 0.1) {
+        // Obtener el valor actual a partir de la diferencia porcentual y el setpoint.
+        const valorActual = tipo === 'jg'  ?
+            diferenciasPorcentuales.jg[indiceCelda] * SPJG[indiceCelda] + SPJG[indiceCelda] : diferenciasPorcentuales.hf[indiceCelda] * SPHF[indiceCelda] + SPHF[indiceCelda];
+
+        // Calcular el porcentaje de cambio necesario respecto al setpoint.
+        const porcentajeCambio = (Math.abs(diferencia*100)).toFixed(0);
+
+        // Definir la acción a tomar basada en si el valor actual es mayor o menor que el setpoint.
+        const accion = valorActual > setpoint ?
+            `Disminuir` : `Incrementar`;
+
+        // Construir el mensaje con la acción a tomar, el porcentaje de cambio y el setpoint.
+        const mensaje = `<p><strong class="h5"><b>${tipo.toUpperCase()}:${accion}</b></strong> el valor un <strong class="h5"><b>${porcentajeCambio}%</b></strong> para llegar a Setpoint: <strong class="h5"><b>${setpoint}</b></strong></p>`;
+
+        // Establecer el mensaje en el div de recomendación.
         recomendacionDiv.innerHTML = mensaje;
     } else {
-        recomendacionDiv.innerHTML = '<h5>no existen recomendaciones por el momento.</h5>';
+        // Si la diferencia es menor o igual al 10%, no hay recomendaciones.
+        recomendacionDiv.innerHTML = '<b>No existen recomendaciones por el momento</b>';
     }
 }
+
+
+function caudalJG(data, indiceCelda) {
+    if (!data || data.jg === undefined) {
+        console.error('Objeto data inválido o propiedad jg no encontrada');
+        return; // Puedes decidir devolver un valor predeterminado o manejar el error como mejor te parezca
+    }
+    const deltaJG = (data.jg - SPJG[indiceCelda]);
+    const cmSegJG = (deltaJG * ((3.1416 * (800*800) )) ) / 2;
+    const QJG = (cmSegJG ) / 360 ;
+    return QJG.toFixed(0);
+}
+
 
 function evaluarYActualizarClases(data, indiceCelda) {
     const elementoJG = document.getElementById(`celda${indiceCelda + 1}-jg`);
@@ -63,14 +89,25 @@ function evaluarYActualizarClases(data, indiceCelda) {
     const diferenciaJG = (data.jg - SPJG[indiceCelda]) / SPJG[indiceCelda];
     const diferenciaHF = (data.hf - SPHF[indiceCelda]) / SPHF[indiceCelda];
 
+    // Almacenar las diferencias porcentuales
     diferenciasPorcentuales.jg[indiceCelda] = diferenciaJG;
     diferenciasPorcentuales.hf[indiceCelda] = diferenciaHF;
 
+    // Actualizar clases basado en las diferencias
     actualizarClase(elementoJG, Math.abs(diferenciaJG));
     actualizarClase(elementoHF, Math.abs(diferenciaHF));
+
+    // Generar recomendaciones
     generarRecomendacion(diferenciaJG, indiceCelda, 'jg');
     generarRecomendacion(diferenciaHF, indiceCelda, 'hf');
+
+    // Llamar a caudalJG y almacenar el resultado en una nueva variable
+    const resultadoQJG = caudalJG(data, indiceCelda);
+
+    // Aquí puedes usar resultadoQJG para lo que necesites
+    console.log(`El resultado de QJG para la celda ${indiceCelda} es: ${resultadoQJG}`);
 }
+
 
 function actualizarClase(elemento, diferencia, tipo = '') {
     elemento.classList.remove('btn-danger', 'btn-warning');
@@ -115,15 +152,15 @@ function actualizarRO() {
             const valorActualRO = data.ro;
             elementoRO.innerHTML = `<h2>RO: <br>${truncarADosDecimales(valorActualRO)}</h2>`;
             const diferenciaPorcentual = Math.abs(valorActualRO - SPRO) / SPRO;
-            const ajuste = truncarADosDecimales(diferenciaPorcentual * SPRO * 0.5); // Calcula el ajuste como la mitad de la diferencia porcentual
+            const ajuste = truncarADosDecimales(((diferenciaPorcentual * SPRO)*100)/2 ); // Calcula el ajuste como la mitad de la diferencia porcentual
 
             // Evalúa si la variación porcentual es mayor o igual a 0.1 (10%)
             if (diferenciaPorcentual >= 0.1) {
                 let accion = valorActualRO > SPRO ? 'cerrar' : 'abrir';
-                let mensaje = `<h5>Recomendación RO: Es recomendable ${accion} la palanca un ${ajuste}%.</h5>`;
+                let mensaje = `<p>Recomendación RO: Es recomendable <strong class="h5"><b>${accion}</b></Strong> la palanca un <strong class="h5"><b>${ajuste}%</b></strong>.</p>`;
                 recomendacionDiv.innerHTML = mensaje;
             } else {
-                recomendacionDiv.innerHTML = '<h5>Recomendación RO: El valor de RO está dentro del rango aceptable.</h5>';
+                recomendacionDiv.innerHTML = '<p>Recomendación RO: El valor de RO está dentro del rango aceptable.</p>';
             }
 
             // Opcional: actualizarClase(elementoRO, diferenciaPorcentual);
