@@ -75,9 +75,9 @@ function caudalJG(data, indiceCelda) {
         console.error('Objeto data inválido o propiedad jg no encontrada');
         return; // Puedes decidir devolver un valor predeterminado o manejar el error como mejor te parezca
     }
-    const deltaJG = (data.jg - SPJG[indiceCelda]);
-    const cmSegJG = (deltaJG * ((3.1416 * (800*800) )) ) / 2;
-    const QJG = (cmSegJG ) / 360 ;
+    const deltaJG = (SPJG[indiceCelda] - data.jg );
+    const cmSegJG = (deltaJG * ((3.1416 * 16 )) ) ;
+    const QJG = (cmSegJG ) * 36 * SPJG[indiceCelda] ;
     return QJG.toFixed(0);
 }
 
