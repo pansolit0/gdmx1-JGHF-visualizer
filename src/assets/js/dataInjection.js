@@ -1,5 +1,5 @@
 const SPJG = [1.30, 1.30, 1.00, 1.00, 0.80, 0.60, 0.50];
-const SPHF = [5.00, 5.00, 6.00, 7.00, 8.00, 8.00, 10.00];
+const SPHF = [5.00, 5.00, 6.00, 7.00, 8.00, 25.00, 10.00];
 const SPRO = 1.25;
 
 
@@ -34,53 +34,44 @@ function solicitarDatos(celda, columnas, elementoJG, elementoHF) {
         });
 }
 
+function caudalJG(data, indiceCelda) {
+    if (!data || data.jg === undefined) {
+        console.error('Objeto data inválido o propiedad jg no encontrada');
+        return; // Puedes decidir devolver un valor predeterminado o manejar el error como mejor te parezca
+    }
+    const deltaJG = (SPJG[indiceCelda] - data.jg);
+    const cmSegJG = (deltaJG * ((3.1416 * 16)));
+    const QJG = (cmSegJG) * 36 * SPJG[indiceCelda];
+    return QJG.toFixed(0);
+}
 
-
-function generarRecomendacion(diferencia, indiceCelda, tipo , data) {
-
-
+function generarRecomendacion(diferencia, indiceCelda, tipo, data, resultadoQJG = null) {
     // Definir el setpoint basado en el tipo.
     const setpoint = tipo === 'jg' ? SPJG[indiceCelda] : SPHF[indiceCelda];
 
     // Obtener el elemento del DOM donde se mostrará la recomendación.
     const recomendacionDiv = document.getElementById(`rec${tipo.toUpperCase()}C${indiceCelda + 1}`);
 
-    // Comprobar si la diferencia es mayor al 10%.
     if (Math.abs(diferencia) > 0.1) {
-        // Obtener el valor actual a partir de la diferencia porcentual y el setpoint.
-        const valorActual = tipo === 'jg'  ?
+        const valorActual = tipo === 'jg' ?
             diferenciasPorcentuales.jg[indiceCelda] * SPJG[indiceCelda] + SPJG[indiceCelda] : diferenciasPorcentuales.hf[indiceCelda] * SPHF[indiceCelda] + SPHF[indiceCelda];
 
-        // Calcular el porcentaje de cambio necesario respecto al setpoint.
-        const porcentajeCambio = (Math.abs(diferencia*100)).toFixed(0);
-
-        // Definir la acción a tomar basada en si el valor actual es mayor o menor que el setpoint.
+        const porcentajeCambio = (Math.abs(diferencia * 100)).toFixed(0);
         const accion = valorActual > setpoint ?
             `Disminuir` : `Incrementar`;
 
-        // Construir el mensaje con la acción a tomar, el porcentaje de cambio y el setpoint.
-        const mensaje = `<p><strong class="h5"><b>${tipo.toUpperCase()}:${accion}</b></strong> el valor un <strong class="h5"><b>${porcentajeCambio}%</b></strong> para llegar a Setpoint: <strong class="h5"><b>${setpoint}</b></strong></p>`;
+        let mensaje = `<p> para llegar a Setpoint: <strong class="h5"><b>${setpoint}</b></strong> <strong class="h5"><b>${tipo.toUpperCase()}:${accion}</b></strong> el valor un <strong class="h5"><b>${porcentajeCambio}% `;
 
-        // Establecer el mensaje en el div de recomendación.
+        // Incluir el resultadoQJG en el mensaje si está disponible y la recomendación es para 'jg'
+        if (resultadoQJG !== null && tipo === 'jg') {
+            mensaje += ` (${resultadoQJG} cm³/s )</b></strong></p>`;
+        }
+
         recomendacionDiv.innerHTML = mensaje;
     } else {
-        // Si la diferencia es menor o igual al 10%, no hay recomendaciones.
         recomendacionDiv.innerHTML = '<b>No existen recomendaciones por el momento</b>';
     }
 }
-
-
-function caudalJG(data, indiceCelda) {
-    if (!data || data.jg === undefined) {
-        console.error('Objeto data inválido o propiedad jg no encontrada');
-        return; // Puedes decidir devolver un valor predeterminado o manejar el error como mejor te parezca
-    }
-    const deltaJG = (SPJG[indiceCelda] - data.jg );
-    const cmSegJG = (deltaJG * ((3.1416 * 16 )) ) ;
-    const QJG = (cmSegJG ) * 36 * SPJG[indiceCelda] ;
-    return QJG.toFixed(0);
-}
-
 
 function evaluarYActualizarClases(data, indiceCelda) {
     const elementoJG = document.getElementById(`celda${indiceCelda + 1}-jg`);
@@ -89,23 +80,21 @@ function evaluarYActualizarClases(data, indiceCelda) {
     const diferenciaJG = (data.jg - SPJG[indiceCelda]) / SPJG[indiceCelda];
     const diferenciaHF = (data.hf - SPHF[indiceCelda]) / SPHF[indiceCelda];
 
-    // Almacenar las diferencias porcentuales
     diferenciasPorcentuales.jg[indiceCelda] = diferenciaJG;
     diferenciasPorcentuales.hf[indiceCelda] = diferenciaHF;
 
-    // Actualizar clases basado en las diferencias
     actualizarClase(elementoJG, Math.abs(diferenciaJG));
     actualizarClase(elementoHF, Math.abs(diferenciaHF));
 
-    // Generar recomendaciones
-    generarRecomendacion(diferenciaJG, indiceCelda, 'jg');
-    generarRecomendacion(diferenciaHF, indiceCelda, 'hf');
-
-    // Llamar a caudalJG y almacenar el resultado en una nueva variable
     const resultadoQJG = caudalJG(data, indiceCelda);
 
-    // Aquí puedes usar resultadoQJG para lo que necesites
-    console.log(`El resultado de QJG para la celda ${indiceCelda} es: ${resultadoQJG}`);
+    // Solo pasamos resultadoQJG a generarRecomendacion si la diferencia es mayor al 10%
+    if (Math.abs(diferenciaJG) > 0.1) {
+        generarRecomendacion(diferenciaJG, indiceCelda, 'jg', data, resultadoQJG);
+    } else {
+        generarRecomendacion(diferenciaJG, indiceCelda, 'jg', data);
+    }
+    generarRecomendacion(diferenciaHF, indiceCelda, 'hf', data);
 }
 
 
@@ -176,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {    let elementoRO = d
     // Inicialización y carga de datos iniciales
     actualizarRO();
     actualizarDatos();
-    setInterval(actualizarDatos, 600000); // 600000 milisegundos = 10 minutos
+    setInterval(actualizarDatos, 300000); // 600000 milisegundos = 10 minutos
 
     // Añadir event listeners a los checkboxes
     for (let i = 1; i <= 7; i++) {
