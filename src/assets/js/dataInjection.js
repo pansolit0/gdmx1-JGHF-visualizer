@@ -1,5 +1,5 @@
-const SPJG = [1.30, 1.30, 1.00, 1.00, 0.80, 0.76, 0.50];
-const SPHF = [5.00, 5.00, 6.00, 7.00, 8.00, 40.00, 10.00];
+const SPJG = [1.10, 1.10, 0.90, 0.90, 0.80, 0.70, 0.50];
+const SPHF = [10.00, 10.00, 15.00, 15.00, 30.00, 30.00, 40.00];
 const SPRO = 1150;
 
 
@@ -30,13 +30,13 @@ function solicitarDatos(celda, columnas, elementoJG, elementoHF) {
             if (elementoJG) {
                 const jgData = data.jg !== 0 ? data.jg : ultimosDatosValidos.jg[celda - 1];
                 // Agregar guiones como separación
-                elementoJG.innerHTML = `<h3>JG: ${truncarADosDecimales(jgData)}<br>----- <span>SP:${SPJG[celda - 1]}</span></h3>`;
+                elementoJG.innerHTML = `<h3>JG: ${truncarADosDecimales(jgData)}<br>-----</br> <span>SP:${SPJG[celda - 1]}</span></h3>`;
                 if (data.jg !== 0) ultimosDatosValidos.jg[celda - 1] = data.jg;
             }
             if (elementoHF) {
                 const hfData = data.hf !== 0 ? data.hf : ultimosDatosValidos.hf[celda - 1];
                 // Agregar guiones como separación para HF
-                elementoHF.innerHTML = `<h3>HF: ${truncarADosDecimales(hfData.toFixed(0))}<br>-----<br><span>SP: ${SPHF[celda - 1]}</span></h3>`;
+                elementoHF.innerHTML = `<h3>HF:${truncarADosDecimales(hfData.toFixed(0))} <br>-----</br><span>SP: ${SPHF[celda - 1]}</span></h3>`;
                 if (data.hf !== 0) ultimosDatosValidos.hf[celda - 1] = data.hf;
             }
             evaluarYActualizarClases(data, celda - 1);
@@ -71,24 +71,24 @@ function generarRecomendacion(diferencia, indiceCelda, tipo, data, resultadoQJG 
         if (tipo === 'jg') {
             if (diferencia < 0) {
                 // Mensaje para jg cuando el valor es negativo
-                mensajeInicio += `<p class="h5"><strong>acción:</strong> Suba el flujo de aire 5% el valor que indica el flujometro, observe y repita acción si es necesario.</strong></p>`;
+                mensajeInicio += `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Suba el flujo de aire 5% el valor que indica el flujometro, observe y repita acción si es necesario.</strong></p>`;
             } else {
                 // Mensaje para jg cuando el valor es positivo
-                mensajeInicio += `<p class="h5"><strong>acción:</strong> Baje el flujo de aire 5% el valor que indica el flujometro, observe y repita acción si es necesario.</strong></p>`;
+                mensajeInicio += `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Baje el flujo de aire 5% el valor que indica el flujometro, observe y repita acción si es necesario.</strong></p>`;
             }
         } else if (tipo === 'hf') {
             if (diferencia < 0) {
                 // Mensaje para hf cuando el valor es negativo
-                mensajeInicio += `<p class="h5"><strong>acción:</strong> Cierre las válvulas de dardo recorriendo 5cm, observe y repita acción si es necesario.</p>`;
+                mensajeInicio += `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Cierre las válvulas de dardo recorriendo 5cm, observe y repita acción si es necesario.</p>`;
             } else {
                 // Mensaje para hf cuando el valor es positivo
-                mensajeInicio += `<p class="h5"><strong>acción:</strong> Abra Las válvulas de dardo recorriendo 5cm, observe y repita acción si es necesario.</strong></p>`;
+                mensajeInicio += `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Abra Las válvulas de dardo recorriendo 5cm, observe y repita acción si es necesario.</p>`;
             }
         }
 
         recomendacionDiv.innerHTML = mensajeInicio;
     } else {
-        recomendacionDiv.innerHTML = `<p class="h5"><strong> No existen recomendaciones por el momento.</strong></p>`;
+        recomendacionDiv.innerHTML = `<p class="h5 class="texto-responsive""><strong> No existen recomendaciones por el momento.</strong></p>`;
     }
 }
 
@@ -166,10 +166,10 @@ function actualizarRO() {
             // Evalúa si la variación porcentual es mayor o igual a 0.1 (10%)
             if (diferenciaPorcentual >= 0.1) {
                 let accion = valorActualRO > SPRO ? 'cerrar' : 'abrir';
-                let mensaje = `<p>Recomendación RO: Es recomendable <strong class="h5"><b>${accion}</b></Strong> la palanca un <strong class="h5"><b>${ajuste}%</b></strong>.</p>`;
+                let mensaje = `<p class="texto-responsive">Recomendación RO: Es recomendable <strong class="h5"><b>${accion}</b></Strong> la palanca un <strong class="h5"><b>${ajuste}%</b></strong>.</p>`;
                 recomendacionDiv.innerHTML = mensaje;
             } else {
-                recomendacionDiv.innerHTML = '<p>Recomendación RO: El valor de RO está dentro del rango aceptable.</p>';
+                recomendacionDiv.innerHTML = '<p class="texto-responsive"><strong> RO: El valor de RO está dentro del rango aceptable.</strong></p>';
             }
 
             // Opcional: actualizarClase(elementoRO, diferenciaPorcentual);

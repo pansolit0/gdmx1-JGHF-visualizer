@@ -78,59 +78,79 @@ p{
     align-items: center;
     justify-content: center;
 }
+.texto-responsive {
+    font-size: 18px; /* Tamaño predeterminado */
+}
 
+@media (max-width: 768px) {
+    .texto-responsive {
+        font-size: 14px; /* Para tabletas y dispositivos más pequeños */
+    }
+}
+@media (min-width: 782px) and (max-width: 1222px) {
+    .texto-responsive {
+        font-size: 11px; /* Para pantallas entre 782px y 1222px de ancho */
+    }
+}
+@media (min-width: 782px) and (max-width: 1222px) {
+    .rectangle {
+        width: 330px;
+        height: 100px;
+    }
+}
 
-@media (max-width: 1368px) {
+@media (min-width: 782px) and (max-width: 1368px) {
     .rectangle {
         width: 50%;
-        height: 70px;
+        height: 50%;
     }
 }
 
 @media (max-width: 1368px) {
     .square {
-        width: 63px;
-        height: 63px;
+        width: 73px;
+        height: 83px;
         }
+
     @media (max-width: 1366px) {
         .square {
-            width: 100px;
-            height: 100px;
+            width: 110px;
+            height: 140px;
         }
             @media (max-width: 740px) {
                 .square {
                     width: 98px;
-                    height: 98px;
+                    height: 108px;
                 }
                 @media (max-width: 720px) {
                     .square {
                         width: 95px;
-                        height: 95px;
+                        height: 105px;
                     }
                     @media (max-width: 653px) {
                         .square {
                             width: 75px;
-                            height: 75px;
+                            height: 95px;
                         }
                         @media (max-width: 430px) {
                             .square {
                                 width: 60px;
-                                height: 60px;
+                                height: 80px;
                             }
                             @media (max-width: 414px) {
                                 .square {
                                     width: 65px;
-                                    height: 65px;
+                                    height: 85px;
                                 }
                                 @media (max-width: 390px) {
                                     .square {
                                         width: 50px;
-                                        height: 50px;
+                                        height: 70px;
                                     }
                                     @media (max-width: 360px) {
                                         .square {
                                             width: 52px;
-                                            height: 52px;
+                                            height: 72px;
                                         }
                                     }
                                 }
