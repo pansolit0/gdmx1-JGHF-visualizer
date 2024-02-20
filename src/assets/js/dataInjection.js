@@ -1,16 +1,17 @@
-const SPJG = [1.30, 1.30, 1.00, 1.00, 0.80, 0.60, 0.50];
-const SPHF = [5.00, 5.00, 6.00, 7.00, 8.00, 25.00, 10.00];
-const SPRO = 1.25;
+const SPJG = [1.30, 1.30, 1.00, 1.00, 0.80, 0.76, 0.50];
+const SPHF = [5.00, 5.00, 6.00, 7.00, 8.00, 40.00, 10.00];
+const SPRO = 1150;
 
 
-let diferenciasPorcentuales = { jg: [], hf: [], ro: [] };
+let diferenciasPorcentuales = {jg: [], hf: [], ro: []};
+let ultimosDatosValidos = {jg: Array(7).fill(0), hf: Array(7).fill(0)};
 
 function truncarADosDecimales(numero) {
     return Math.trunc(numero * 100) / 100;
 }
 
 function solicitarDatos(celda, columnas, elementoJG, elementoHF) {
-    const datos = { celda: 'celda_' + celda, columnas: columnas };
+    const datos = {celda: 'celda_' + celda, columnas: columnas};
     fetch(apiConfig.datosChart, {
         method: 'POST',
         headers: {
@@ -25,8 +26,19 @@ function solicitarDatos(celda, columnas, elementoJG, elementoHF) {
             return response.json();
         })
         .then(data => {
-            if (elementoJG) elementoJG.innerHTML = `<h3>JG: <br>${truncarADosDecimales(data.jg)}</h3>`;
-            if (elementoHF) elementoHF.innerHTML = `<h3>HF: <br>${truncarADosDecimales(data.hf)}</h3>`;
+            // Si el valor recibido es 0, usamos el último valor válido almacenado
+            if (elementoJG) {
+                const jgData = data.jg !== 0 ? data.jg : ultimosDatosValidos.jg[celda - 1];
+                // Agregar guiones como separación
+                elementoJG.innerHTML = `<h3>JG: ${truncarADosDecimales(jgData)}<br>----- <span>SP:${SPJG[celda - 1]}</span></h3>`;
+                if (data.jg !== 0) ultimosDatosValidos.jg[celda - 1] = data.jg;
+            }
+            if (elementoHF) {
+                const hfData = data.hf !== 0 ? data.hf : ultimosDatosValidos.hf[celda - 1];
+                // Agregar guiones como separación para HF
+                elementoHF.innerHTML = `<h3>HF: ${truncarADosDecimales(hfData.toFixed(0))}<br>-----<br><span>SP: ${SPHF[celda - 1]}</span></h3>`;
+                if (data.hf !== 0) ultimosDatosValidos.hf[celda - 1] = data.hf;
+            }
             evaluarYActualizarClases(data, celda - 1);
         })
         .catch(error => {
@@ -45,33 +57,41 @@ function caudalJG(data, indiceCelda) {
     return QJG.toFixed(0);
 }
 
+
+
 function generarRecomendacion(diferencia, indiceCelda, tipo, data, resultadoQJG = null) {
     // Definir el setpoint basado en el tipo.
     const setpoint = tipo === 'jg' ? SPJG[indiceCelda] : SPHF[indiceCelda];
 
     // Obtener el elemento del DOM donde se mostrará la recomendación.
     const recomendacionDiv = document.getElementById(`rec${tipo.toUpperCase()}C${indiceCelda + 1}`);
-
     if (Math.abs(diferencia) > 0.1) {
-        const valorActual = tipo === 'jg' ?
-            diferenciasPorcentuales.jg[indiceCelda] * SPJG[indiceCelda] + SPJG[indiceCelda] : diferenciasPorcentuales.hf[indiceCelda] * SPHF[indiceCelda] + SPHF[indiceCelda];
+        let mensajeInicio = ``;
 
-        const porcentajeCambio = (Math.abs(diferencia * 100)).toFixed(0);
-        const accion = valorActual > setpoint ?
-            `Disminuir` : `Incrementar`;
-
-        let mensaje = `<p> para llegar a Setpoint: <strong class="h5"><b>${setpoint}</b></strong> <strong class="h5"><b>${tipo.toUpperCase()}:${accion}</b></strong> el valor un <strong class="h5"><b>${porcentajeCambio}% `;
-
-        // Incluir el resultadoQJG en el mensaje si está disponible y la recomendación es para 'jg'
-        if (resultadoQJG !== null && tipo === 'jg') {
-            mensaje += ` (${resultadoQJG} cm³/s )</b></strong></p>`;
+        if (tipo === 'jg') {
+            if (diferencia < 0) {
+                // Mensaje para jg cuando el valor es negativo
+                mensajeInicio += `<p class="h5"><strong>acción:</strong> Suba el flujo de aire 5% el valor que indica el flujometro, observe y repita acción si es necesario.</strong></p>`;
+            } else {
+                // Mensaje para jg cuando el valor es positivo
+                mensajeInicio += `<p class="h5"><strong>acción:</strong> Baje el flujo de aire 5% el valor que indica el flujometro, observe y repita acción si es necesario.</strong></p>`;
+            }
+        } else if (tipo === 'hf') {
+            if (diferencia < 0) {
+                // Mensaje para hf cuando el valor es negativo
+                mensajeInicio += `<p class="h5"><strong>acción:</strong> Cierre las válvulas de dardo recorriendo 5cm, observe y repita acción si es necesario.</p>`;
+            } else {
+                // Mensaje para hf cuando el valor es positivo
+                mensajeInicio += `<p class="h5"><strong>acción:</strong> Abra Las válvulas de dardo recorriendo 5cm, observe y repita acción si es necesario.</strong></p>`;
+            }
         }
 
-        recomendacionDiv.innerHTML = mensaje;
+        recomendacionDiv.innerHTML = mensajeInicio;
     } else {
-        recomendacionDiv.innerHTML = '<b>No existen recomendaciones por el momento</b>';
+        recomendacionDiv.innerHTML = `<p class="h5"><strong> No existen recomendaciones por el momento.</strong></p>`;
     }
 }
+
 
 function evaluarYActualizarClases(data, indiceCelda) {
     const elementoJG = document.getElementById(`celda${indiceCelda + 1}-jg`);
@@ -122,7 +142,7 @@ function actualizarRO() {
     let recomendacionDiv = document.getElementById('recRO'); // Asegúrate de que este elemento existe en tu HTML
     if (!elementoRO || !recomendacionDiv) return;
 
-    const datos = { celda: 'celda_1', columnas: ['ro'] };
+    const datos = {celda: 'celda_1', columnas: ['ro']};
 
     fetch(apiConfig.datosChart, {
         method: 'POST',
@@ -141,7 +161,7 @@ function actualizarRO() {
             const valorActualRO = data.ro;
             elementoRO.innerHTML = `<h2>RO: <br>${truncarADosDecimales(valorActualRO)}</h2>`;
             const diferenciaPorcentual = Math.abs(valorActualRO - SPRO) / SPRO;
-            const ajuste = truncarADosDecimales(((diferenciaPorcentual * SPRO)*100)/2 ); // Calcula el ajuste como la mitad de la diferencia porcentual
+            const ajuste = truncarADosDecimales(((diferenciaPorcentual * SPRO) * 100) / 2); // Calcula el ajuste como la mitad de la diferencia porcentual
 
             // Evalúa si la variación porcentual es mayor o igual a 0.1 (10%)
             if (diferenciaPorcentual >= 0.1) {
@@ -160,8 +180,8 @@ function actualizarRO() {
 }
 
 
-
-document.addEventListener('DOMContentLoaded', function() {    let elementoRO = document.getElementById('valor-ro');
+document.addEventListener('DOMContentLoaded', function () {
+    let elementoRO = document.getElementById('valor-ro');
     // Inicialización y carga de datos iniciales
     actualizarRO();
     actualizarDatos();
@@ -178,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {    let elementoRO = d
 
     // Revisar el estado de las recomendaciones al cargar la página
     revisarEstadoRecomendaciones();
-    })
+})
 
 
 function manejarCheckbox(celda, tipo) {
@@ -194,6 +214,7 @@ function manejarCheckbox(celda, tipo) {
         // Iniciar temporizador (opcional, dependiendo de si necesitas hacer algo después de 30 minutos)
     }
 }
+
 function revisarEstadoRecomendaciones() {
     for (let i = 1; i <= 7; i++) {
         ['jg', 'hf'].forEach(tipo => {

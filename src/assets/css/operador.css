@@ -71,8 +71,8 @@ p{
 
 .square {
     /* Initial size */
-    width: 95px;
-    height: 95px;
+    width: 130px;
+    height: 140px;
     /* Flex properties for centering content */
     display: flex;
     align-items: center;
