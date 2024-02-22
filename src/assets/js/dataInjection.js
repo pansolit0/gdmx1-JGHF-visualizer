@@ -6,12 +6,9 @@ const SPRO = 1150;
 let diferenciasPorcentuales = {jg: [], hf: [], ro: []};
 let ultimosDatosValidos = {jg: Array(7).fill(0), hf: Array(7).fill(0)};
 
-function truncarADosDecimales(numero) {
-    return Math.trunc(numero * 100) / 100;
-}
 
 function solicitarDatos(celda, columnas, elementoJG, elementoHF) {
-    const datos = {celda: 'celda_' + celda, columnas: columnas};
+    const datos = { celda: 'celda_' + celda, columnas: columnas };
     fetch(apiConfig.datosChart, {
         method: 'POST',
         headers: {
@@ -26,18 +23,25 @@ function solicitarDatos(celda, columnas, elementoJG, elementoHF) {
             return response.json();
         })
         .then(data => {
-            // Si el valor recibido es 0, usamos el último valor válido almacenado
             if (elementoJG) {
-                const jgData = data.jg !== 0 ? data.jg : ultimosDatosValidos.jg[celda - 1];
-                // Agregar guiones como separación
-                elementoJG.innerHTML = `<h3>JG: ${truncarADosDecimales(jgData)}<br>-----</br> <span>SP:${SPJG[celda - 1]}</span></h3>`;
-                if (data.jg !== 0) ultimosDatosValidos.jg[celda - 1] = data.jg;
+                if (data.jg === 0) {
+                    elementoJG.innerHTML = `<h3>JG: <span>no disponible</span></h3>`;
+                    generarRecomendacion(0, celda - 1, 'jg', data, null, true);
+                } else {
+                    const jgData = data.jg;
+                    elementoJG.innerHTML = `<h3>JG: ${jgData.toFixed(2)}<br>-----</br> <span>SP:${SPJG[celda - 1]}</span></h3>`;
+                    ultimosDatosValidos.jg[celda - 1] = data.jg;
+                }
             }
             if (elementoHF) {
-                const hfData = data.hf !== 0 ? data.hf : ultimosDatosValidos.hf[celda - 1];
-                // Agregar guiones como separación para HF
-                elementoHF.innerHTML = `<h3>HF:${truncarADosDecimales(hfData.toFixed(0))} <br>-----</br><span>SP: ${SPHF[celda - 1]}</span></h3>`;
-                if (data.hf !== 0) ultimosDatosValidos.hf[celda - 1] = data.hf;
+                if (data.hf < 0) {
+                    elementoHF.innerHTML = `<h3>HF: <span>no disponible</span></h3>`;
+                    generarRecomendacion(0, celda - 1, 'hf', data, null, true);
+                } else {
+                    const hfData = data.hf !== 0 ? data.hf : ultimosDatosValidos.hf[celda - 1];
+                    elementoHF.innerHTML = `<h3>HF:${hfData.toFixed(0)} <br>-----</br><span>SP: ${SPHF[celda - 1]}</span></h3>`;
+                    if (data.hf !== 0) ultimosDatosValidos.hf[celda - 1] = data.hf;
+                }
             }
             evaluarYActualizarClases(data, celda - 1);
         })
@@ -45,6 +49,7 @@ function solicitarDatos(celda, columnas, elementoJG, elementoHF) {
             console.error('Error al hacer la solicitud:', error);
         });
 }
+
 
 function caudalJG(data, indiceCelda) {
     if (!data || data.jg === undefined) {
@@ -60,37 +65,32 @@ function caudalJG(data, indiceCelda) {
 
 
 function generarRecomendacion(diferencia, indiceCelda, tipo, data, resultadoQJG = null) {
-    // Definir el setpoint basado en el tipo.
     const setpoint = tipo === 'jg' ? SPJG[indiceCelda] : SPHF[indiceCelda];
-
-    // Obtener el elemento del DOM donde se mostrará la recomendación.
     const recomendacionDiv = document.getElementById(`rec${tipo.toUpperCase()}C${indiceCelda + 1}`);
-    if (Math.abs(diferencia) > 0.1) {
-        let mensajeInicio = ``;
 
+    // Comprobar si JG o HF están disponibles
+    let mensaje = "";
+    if (data.jg === 0 && tipo === 'jg') {
+        mensaje = `<p class="h5 texto-responsive"><strong>JG no se encuentra disponible en este momento.</strong></p>`;
+    } else if (data.hf < 0 && tipo === 'hf') {
+        mensaje = `<p class="h5 texto-responsive"><strong>HF no se encuentra disponible en este momento.</strong></p>`;
+    } else if (Math.abs(diferencia) > 0.1) {
         if (tipo === 'jg') {
-            if (diferencia < 0) {
-                // Mensaje para jg cuando el valor es negativo
-                mensajeInicio += `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Suba el flujo de aire 5% el valor que indica el flujometro, observe y repita acción si es necesario.</strong></p>`;
-            } else {
-                // Mensaje para jg cuando el valor es positivo
-                mensajeInicio += `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Baje el flujo de aire 5% el valor que indica el flujometro, observe y repita acción si es necesario.</strong></p>`;
-            }
+            mensaje = diferencia < 0 ?
+                `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Suba el flujo de aire 5% el valor que indica el flujometro, observe y repita acción si es necesario.</strong></p>` :
+                `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Baje el flujo de aire 5% el valor que indica el flujometro, observe y repita acción si es necesario.</strong></p>`;
         } else if (tipo === 'hf') {
-            if (diferencia < 0) {
-                // Mensaje para hf cuando el valor es negativo
-                mensajeInicio += `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Cierre las válvulas de dardo recorriendo 5cm, observe y repita acción si es necesario.</p>`;
-            } else {
-                // Mensaje para hf cuando el valor es positivo
-                mensajeInicio += `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Abra Las válvulas de dardo recorriendo 5cm, observe y repita acción si es necesario.</p>`;
-            }
+            mensaje = diferencia < 0 ?
+                `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Abrir las válvulas de dardo recorriendo 5cm, observe y repita acción si es necesario.</p>` :
+                `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Cerrar Las válvulas de dardo recorriendo 5cm, observe y repita acción si es necesario.</p>`;
         }
-
-        recomendacionDiv.innerHTML = mensajeInicio;
     } else {
-        recomendacionDiv.innerHTML = `<p class="h5 class="texto-responsive""><strong> No existen recomendaciones por el momento.</strong></p>`;
+        mensaje = `<p class="h5 texto-responsive"><strong>No existen recomendaciones por el momento.</strong></p>`;
     }
+
+    recomendacionDiv.innerHTML = mensaje;
 }
+
 
 
 function evaluarYActualizarClases(data, indiceCelda) {
@@ -127,6 +127,7 @@ function actualizarClase(elemento, diferencia, tipo = '') {
     }
 }
 
+
 function actualizarDatos() {
     for (let i = 1; i <= 7; i++) {
         let elementoJG = document.getElementById(`celda${i}-jg`);
@@ -136,6 +137,7 @@ function actualizarDatos() {
         }
     }
 }
+
 
 function actualizarRO() {
     let elementoRO = document.getElementById('valor-ro');
@@ -159,9 +161,9 @@ function actualizarRO() {
         })
         .then(data => {
             const valorActualRO = data.ro;
-            elementoRO.innerHTML = `<h2>RO: <br>${truncarADosDecimales(valorActualRO)}</h2>`;
+            elementoRO.innerHTML = `<h2>RO: <br>${(valorActualRO)}</h2>`;
             const diferenciaPorcentual = Math.abs(valorActualRO - SPRO) / SPRO;
-            const ajuste = truncarADosDecimales(((diferenciaPorcentual * SPRO) * 100) / 2); // Calcula el ajuste como la mitad de la diferencia porcentual
+            const ajuste = (((diferenciaPorcentual * SPRO) * 100) / 2); // Calcula el ajuste como la mitad de la diferencia porcentual
 
             // Evalúa si la variación porcentual es mayor o igual a 0.1 (10%)
             if (diferenciaPorcentual >= 0.1) {
@@ -214,6 +216,7 @@ function manejarCheckbox(celda, tipo) {
         // Iniciar temporizador (opcional, dependiendo de si necesitas hacer algo después de 30 minutos)
     }
 }
+
 
 function revisarEstadoRecomendaciones() {
     for (let i = 1; i <= 7; i++) {
