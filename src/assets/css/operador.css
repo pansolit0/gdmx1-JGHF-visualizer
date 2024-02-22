@@ -103,63 +103,114 @@ p{
 
 @media (min-width: 782px) and (max-width: 1368px) {
     .rectangle {
-        width: 50%;
-        height: 50%;
+        width: 330px;
+        height: 280px;
     }
 }
 
-@media (max-width: 1368px) {
+@media (max-width: 1366px) {
     .square {
-        width: 110px;
-        height: 140px;
-        }
-
-    @media (max-width: 1366px) {
-        .square {
-            width: 110px;
-            height: 140px;
-        }
-            @media (max-width: 740px) {
-                .square {
-                    width: 98px;
-                    height: 108px;
-                }
-                @media (max-width: 720px) {
-                    .square {
-                        width: 95px;
-                        height: 105px;
-                    }
-                    @media (max-width: 653px) {
-                        .square {
-                            width: 75px;
-                            height: 95px;
-                        }
-                        @media (max-width: 430px) {
-                            .square {
-                                width: 60px;
-                                height: 80px;
-                            }
-                            @media (max-width: 414px) {
-                                .square {
-                                    width: 65px;
-                                    height: 85px;
-                                }
-                                @media (max-width: 390px) {
-                                    .square {
-                                        width: 50px;
-                                        height: 70px;
-                                    }
-                                    @media (max-width: 360px) {
-                                        .square {
-                                            width: 52px;
-                                            height: 72px;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        width: 130px;
+        height: 150px;
     }
+    .texto-responsive {
+        font-size: 15px; /* Para pantallas entre 782px y 1222px de ancho */
+    }
+    .rectangleFULL{
+        width: 130px;
+        height: 180px;
+    }
+    .rectangle {
+        width: 330px;
+        height: 280px;
+    }
+}
+
+@media (max-width: 913px) {
+    .rectangle {
+        width: 130px;
+        height: 180px;
+    }
+
+}
+
+/* Ajustes para pantallas menores a 740px */
+@media (max-width: 740px) {
+    .square {
+        width: 128px;
+        height: 140px;
+    }
+    .rectangle {
+        width: 130px;
+        height: 180px;
+    }
+}
+
+/* Ajustes para pantallas menores a 720px */
+@media (max-width: 720px) {
+    .square {
+        width: 95px;
+        height: 105px;
+    }
+    .rectangle {
+        width: 105px;
+        height: 180px;
+    }
+}
+
+/* Ajustes para pantallas menores a 653px */
+@media (max-width: 653px) {
+    .square {
+        width: 112px;
+        height: 125px;
+    }
+    .rectangle {
+        width: 120px;
+        height: 180px;
+    }
+}
+
+/* Ajustes para pantallas menores a 430px */
+@media (max-width: 430px) {
+    .square {
+        width: 110.5px; /* Promedio entre 60px y 65px, ajustado según la solicitud */
+        height: 130.5px; /* Promedio entre 80px y 85px, ajustado según la solicitud */
+    }
+    .texto-responsive {
+        font-size: 15px; /* Para tabletas y dispositivos más pequeños */
+    }
+    .rectangle {
+        width: 340px;
+        height: 220px;
+    }
+}
+
+/* Ajustes para pantallas menores a 390px */
+@media (max-width: 390px) {
+    .square {
+        width: 60px;
+        height: 85px;
+    }
+    h3{
+        font-size: small;
+    }
+    .texto-responsive {
+        font-size: 10px; /* Para tabletas y dispositivos más pequeños */
+    }
+    .rectangle {
+        width: 330px;
+        height: 150px;
+    }
+}
+
+/* Ajustes para pantallas menores a 360px */
+@media (max-width: 360px) {
+    .square {
+        width: 70px;
+        height: 92px;
+    }
+    .rectangle {
+        width: 380px;
+        height: 150px;
+    }
+}
