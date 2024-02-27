@@ -4,51 +4,45 @@ const SPRO = 1150;
 
 
 let diferenciasPorcentuales = {jg: [], hf: [], ro: []};
-let ultimosDatosValidos = {jg: Array(7).fill(0), hf: Array(7).fill(0)};
-
-
-function solicitarDatos(celda, columnas, elementoJG, elementoHF) {
-    const datos = { celda: 'celda_' + celda, columnas: columnas };
-    fetch(apiConfig.datosChart, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(datos)
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (elementoJG) {
-                if (data.jg === 0) {
-                    elementoJG.innerHTML = `<h3>JG: <span>no disponible</span></h3>`;
-                    generarRecomendacion(0, celda - 1, 'jg', data, null, true);
-                } else {
-                    const jgData = data.jg;
-                    elementoJG.innerHTML = `<h3>JG: ${jgData.toFixed(2)}<br>-----</br> <span>SP:${SPJG[celda - 1]}</span></h3>`;
-                    ultimosDatosValidos.jg[celda - 1] = data.jg;
-                }
-            }
-            if (elementoHF) {
-                if (data.hf < 0) {
-                    elementoHF.innerHTML = `<h3>HF: <span>no disponible</span></h3>`;
-                    generarRecomendacion(0, celda - 1, 'hf', data, null, true);
-                } else {
-                    const hfData = data.hf !== 0 ? data.hf : ultimosDatosValidos.hf[celda - 1];
-                    elementoHF.innerHTML = `<h3>HF:${hfData.toFixed(0)} <br>-----</br><span>SP: ${SPHF[celda - 1]}</span></h3>`;
-                    if (data.hf !== 0) ultimosDatosValidos.hf[celda - 1] = data.hf;
-                }
-            }
-            evaluarYActualizarClases(data, celda - 1);
-        })
-        .catch(error => {
-            console.error('Error al hacer la solicitud:', error);
+async function solicitarDatos(celda, columnas, elementoJG, elementoHF) {
+    const datos = { celda: `celda_${celda}`, columnas };
+    try {
+        const response = await fetch(apiConfig.datosChart, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datos)
         });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        actualizarElementoJG(elementoJG, data.jg, celda);
+        actualizarElementoHF(elementoHF, data.hf, celda);
+
+        evaluarYActualizarClases(data, celda - 1);
+    } catch (error) {
+        console.error('Error al hacer la solicitud:', error);
+    }
 }
+
+function actualizarElementoJG(elemento, valor, celda) {
+    if (elemento) {
+        elemento.innerHTML = `<h3>JG: ${valor.toFixed(2)}<br>-----</br> <span>SP:${SPJG[celda - 1]}</span></h3>`;
+    }
+}
+
+function actualizarElementoHF(elemento, valor, celda) {
+    if (elemento) {
+        elemento.innerHTML = `<h3>HF:${valor.toFixed(0)} <br>-----</br><span>SP: ${SPHF[celda - 1]}</span></h3>`;
+    }
+}
+
+
+
+let ultimosDatosValidos = {jg: Array(7).fill(0), hf: Array(7).fill(0)};
 
 
 function caudalJG(data, indiceCelda) {
@@ -68,28 +62,32 @@ function generarRecomendacion(diferencia, indiceCelda, tipo, data, resultadoQJG 
     const setpoint = tipo === 'jg' ? SPJG[indiceCelda] : SPHF[indiceCelda];
     const recomendacionDiv = document.getElementById(`rec${tipo.toUpperCase()}C${indiceCelda + 1}`);
 
-    // Comprobar si JG o HF están disponibles
     let mensaje = "";
-    if (data.jg === 0 && tipo === 'jg') {
-        mensaje = `<p class="h5 texto-responsive"><strong>JG no se encuentra disponible en este momento.</strong></p>`;
-    } else if (data.hf < 0 && tipo === 'hf') {
-        mensaje = `<p class="h5 texto-responsive"><strong>HF no se encuentra disponible en este momento.</strong></p>`;
-    } else if (Math.abs(diferencia) > 0.1) {
-        if (tipo === 'jg') {
-            mensaje = diferencia < 0 ?
+    if (tipo === 'jg') {
+        if (data.jg === 0) {
+            mensaje = `<p class="h5 texto-responsive"><strong>JG no se encuentra disponible en este momento.</strong></p>`;
+        } else if (Math.abs(diferencia) > 0.1) {
+            mensaje = (data.jg < setpoint) ?
                 `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Suba el flujo de aire 5% el valor que indica el flujometro, observe y repita acción si es necesario.</strong></p>` :
                 `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Baje el flujo de aire 5% el valor que indica el flujometro, observe y repita acción si es necesario.</strong></p>`;
-        } else if (tipo === 'hf') {
+        } else {
+            mensaje = `<p class="h5 texto-responsive"><strong>No existen recomendaciones por el momento.</strong></p>`;
+        }
+    } else if (tipo === 'hf') {
+        if (data.hf < 0) {
+            mensaje = `<p class="h5 texto-responsive"><strong>HF no se encuentra disponible en este momento.</strong></p>`;
+        } else if (Math.abs(diferencia) > 0.1) {
             mensaje = diferencia < 0 ?
                 `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Abrir las válvulas de dardo recorriendo 5cm, observe y repita acción si es necesario.</p>` :
                 `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Cerrar Las válvulas de dardo recorriendo 5cm, observe y repita acción si es necesario.</p>`;
+        } else {
+            mensaje = `<p class="h5 texto-responsive"><strong>No existen recomendaciones por el momento.</strong></p>`;
         }
-    } else {
-        mensaje = `<p class="h5 texto-responsive"><strong>No existen recomendaciones por el momento.</strong></p>`;
     }
 
     recomendacionDiv.innerHTML = mensaje;
 }
+
 
 
 

@@ -7,106 +7,156 @@
   <link rel="shortcut icon" type="image/png" href="./src/assets/images/logos/logo.png" />
   <link rel="stylesheet" href="./src/assets/css/styles.min.css" />
   <link rel="stylesheet" href="./src/assets/css/operador.css" />
+  <link rel="stylesheet" href="./src/assets/css/login.css" />
   <script src="./src/env/config.js"></script>
+
 </head>
-<body class="alert alert-secondary">
-    <div class="body-wrapper">
+<body class="alert alert-secondary bg-info-subtle bg-gradient">
+
+
+
+<section class="vh-100 card-img-overlay bg-light bg-gradient">
+  <div class="container-fluid bg-light bg-gradient">
+    <div class="row bg-light bg-gradient ">
+      <div class="col-sm-6 text-black container bg-light bg-gradient">
+        <div class="px-5 ms-xl-4 logoF ">
+
+        </div>
+
+        <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5 card-body ">
+          <form style="width: 23rem;">
+            <div class="logoF card-body">
+            <i class="fas fa-crow fa-2x me-3 pt-5 mt-xl-4" style="color: #709085;"></i>
+            <span class="h1 fw-bold mb-0 logo"><img src="./src/assets/images/logos/logo.png" alt="Logo Isprotec" width="270" height="85"></span>
+            </div>
+            <br>
+            <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Inicio de sesión</h3>
+
+            <div class="form-outline mb-4">
+              <label class="form-label" for="user-input">Usuario</label>
+              <input type="text" id="user-input" class="form-control form-control-lg" />
+
+            </div>
+
+            <div class="form-outline mb-4">
+              <label class="form-label" for="password-input">Contraseña</label>
+              <input type="password" id="password-input" class="form-control form-control-lg" />
+            </div>
+
+            <div class="pt-1 mb-4">
+              <button class="btn btn-info btn-lg btn-block" id="boton-login" type="button">Iniciar Sesión</button>
+            </div>
+            <p>No tienes cuenta?. <a  class="link-info">Habla con tu supervisor para que se te administre tu cuenta.</a></p>
+          </form>
+        </div>
+      </div>
+      <div class="col-sm-6 px-0 d-none d-sm-block">
+        <img src="https://i.ibb.co/qCKW9D7/i-al.png"
+             alt="Login image" class="w-100 vh-100 sapito" style="object-fit: cover; object-position: left;">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div id="contenido-restringido" style="display:none;">
+    <div class="body-wrapper bg-info-subtle ">
       <!--  COMIENZO DE LA INFORMACIÓN PRINCIPAL. -->
       <div class="full">
         <div class="container-fluid py-3">
           <div class="row row-cols-2 row-cols-md-2 row-cols-xl-4 g-4">
             <!-- Celda #1 -->
             <div class="col-md-6 col-sm-6">
-              <div class="card row-cols-2-2 ">
-                <div class="card-header tittle bg-dark bg-gradient "><h2 class="text-white">Celda 1</h2></div>
-                <div class="card-body bg-light" >
-                  <div id="celda1-jg" class="btn btn-success m-1 square">JG<br></div>
-                  <div id="recJGC1" class="btn btn-light m-1 rectangle">RECOMENDACIÓN JG:</div>
-                  <div id="celda1-hf" class="btn btn-success m-1 square">HF<br></div>
-                  <div id="recHFC1" class="btn btn-light m-1 rectangle">RECOMENDACIÓN HF:</div>
+              <div class="card row-cols-2-2 bg-light bg-gradient">
+                <div class="card-header tittle bg-dark-subtle bg-gradient "><h2 class="text-white">Celda 1</h2></div>
+                <div class="card-body bg-light bg-gradient">
+                  <div id="celda1-jg" class="btn btn-success bg-gradient m-1 square">JG<br>VALOR</div>
+                  <div id="recJGC1" class="btn bg-dark-subtle bg-gradient m-1 rectangle">RECOMENDACIÓN JG:</div>
+                  <div id="celda1-hf" class="btn btn-success bg-gradient m-1 square">HF<br></div>
+                  <div id="recHFC1" class="btn bg-dark-subtle bg-gradient m-1 rectangle">RECOMENDACIÓN HF:</div>
                 </div>
               </div>
             </div>
             <!-- Celda #2 -->
             <div class="col-md-6 col-sm-6">
-              <div class="card row-cols-2-2 ">
-                <div class="card-header tittle bg-dark bg-gradient "><h2 class="text-white">Celda 2</h2></div>
+              <div class="card row-cols-2-2 bg-light bg-gradient">
+                <div class="card-header tittle bg-dark-subtle bg-gradient "><h2 class="text-white">Celda 2</h2></div>
                 <div class="card-body bg-light">
-                  <div id="celda2-jg" class="btn btn-success m-1 square" >JG <br>VALOR</div>
-                  <div id="recJGC2" class="btn btn-light m-1 rectangle">RECOMENDACIÓN JG:</div>
-                  <div id="celda2-hf" class="btn btn-success m-1 square" >HF <br>VALOR</div>
-                  <div id="recHFC2" class="btn btn-light m-1 rectangle">RECOMENDACIÓN HF:</div>
+                  <div id="celda2-jg" class="btn btn-success bg-gradient  m-1 square" >JG <br>VALOR</div>
+                  <div id="recJGC2" class="btn  bg-dark-subtle bg-gradient m-1 rectangle">RECOMENDACIÓN JG:</div>
+                  <div id="celda2-hf" class="btn btn-success bg-gradient  m-1 square" >HF <br>VALOR</div>
+                  <div id="recHFC2" class="btn bg-dark-subtle bg-gradient m-1 rectangle">RECOMENDACIÓN HF:</div>
                 </div>
               </div>
             </div>
             <!-- Celda #3 -->
             <div class="col-md-6 col-sm-6">
-              <div class="card row-cols-2-2 ">
-                <div class="card-header tittle bg-dark bg-gradient "><h2 class="text-white">Celda 3</h2></div>
+              <div class="card row-cols-2-2 bg-light bg-gradient">
+                <div class="card-header tittle bg-dark-subtle bg-gradient"><h2 class="text-white">Celda 3</h2></div>
                 <div class="card-body bg-light">
-                  <div id="celda3-jg" class="btn btn-success m-1 square" >JG <br>VALOR</div>
-                  <div id="recJGC3" class="btn btn-light m-1 rectangle ">RECOMENDACIÓN JG:</div>
-                  <div id="celda3-hf" class="btn btn-success m-1 square" >HF <br>VALOR</div>
-                  <div id="recHFC3" class="btn btn-light m-1 rectangle">>RECOMENDACIÓN HF:</div>
+                  <div id="celda3-jg" class="btn btn-success bg-gradient m-1 square" >JG <br>VALOR</div>
+                  <div id="recJGC3" class="btn  bg-dark-subtle bg-gradient m-1 rectangle ">RECOMENDACIÓN JG:</div>
+                  <div id="celda3-hf" class="btn btn-success bg-gradient m-1 square" >HF <br>VALOR</div>
+                  <div id="recHFC3" class="btn  bg-dark-subtle bg-gradient m-1 rectangle">>RECOMENDACIÓN HF:</div>
                 </div>
               </div>
             </div>
             <!-- Celda #4 -->
             <div class="col-md-6 col-sm-6">
-              <div class="card row-cols-2-2 ">
-                <div class="card-header tittle bg-dark bg-gradient"><h2 class="text-white">Celda 4</h2></div>
+              <div class="card row-cols-2-2 bg-light bg-gradient">
+                <div class="card-header tittle bg-dark-subtle bg-gradient"><h2 class="text-white">Celda 4</h2></div>
                 <div class="card-body bg-light">
-                  <div id="celda4-jg" class="btn btn-success m-1 square" >JG <br>VALOR</div>
-                  <div id="recJGC4" class="btn btn-light m-1 rectangle">RECOMENDACIÓN JG:</div>
-                  <div id="celda4-hf" class="btn btn-success m-1 square" >HF <br>VALOR</div>
-                  <div id="recHFC4" class="btn btn-light m-1 rectangle">>RECOMENDACIÓN HF:</div>
+                  <div id="celda4-jg" class="btn btn-success bg-gradient m-1 square" >JG <br>VALOR</div>
+                  <div id="recJGC4" class="btn  bg-dark-subtle bg-gradient  bg-gradient m-1 rectangle">RECOMENDACIÓN JG:</div>
+                  <div id="celda4-hf" class="btn btn-success bg-gradient  m-1 square" >HF <br>VALOR</div>
+                  <div id="recHFC4" class="btn  bg-dark-subtle bg-gradient m-1 rectangle">>RECOMENDACIÓN HF:</div>
                 </div>
               </div>
             </div>
             <!-- Celda #5 -->
             <div class="col-md-6 col-sm-6">
-              <div class="card row-cols-2-2 ">
-                <div class="card-header tittle bg-dark bg-gradient "><h2 class="text-white">Celda 5</h2></div>
+              <div class="card row-cols-2-2 bg-light bg-gradient">
+                <div class="card-header tittle bg-dark-subtle bg-gradient"><h2 class="text-white">Celda 5</h2></div>
                 <div class="card-body bg-light">
-                  <div id="celda5-jg" class="btn btn-success m-1 square" >JG<br>VALOR</div>
-                  <div id="recJGC5" class="btn btn-light m-1 rectangle">RECOMENDACIÓN JG:</div>
-                  <div id="celda5-hf" class="btn btn-success m-1 square" >HF <br>VALOR</div>
-                  <div id="recHFC5" class="btn btn-light m-1 rectangle">RECOMENDACIÓN HF:</div>
+                  <div id="celda5-jg" class="btn btn-success bg-gradient  m-1 square" >JG<br>VALOR</div>
+                  <div id="recJGC5" class="btn  bg-dark-subtle bg-gradient m-1 rectangle">RECOMENDACIÓN JG:</div>
+                  <div id="celda5-hf" class="btn btn-success bg-gradient  m-1 square" >HF <br>VALOR</div>
+                  <div id="recHFC5" class="btn  bg-dark-subtle bg-gradient m-1 rectangle">RECOMENDACIÓN HF:</div>
                 </div>
               </div>
             </div>
             <!-- Celda #6 -->
-            <div class="col-md-6 col-sm-6 celda">
-              <div class="card row-cols-2-2 ">
-                <div class="card-header tittle bg-dark bg-gradient "><h2 class="text-white">Celda 6</h2></div>
+            <div class="col-md-6 col-sm-6">
+              <div class="card row-cols-2-2 bg-light bg-gradient">
+                <div class="card-header tittle bg-dark-subtle bg-gradient"><h2 class="text-white">Celda 6</h2></div>
                 <div class="card-body bg-light">
                   <div id="celda6-jg" class="btn btn-success  bg-gradient m-1 square" >JG <br>VALOR</div>
-                  <div id="recJGC6" class="btn btn-light m-1 rectangle">RECOMENDACIÓN JG:</div>
-                  <div id="celda6-hf" class="btn btn-success m-1 square" >HF <br>VALOR</div>
-                  <div id="recHFC6" class="btn btn-light m-1 rectangle">RECOMENDACIÓN HF:</div>
+                  <div id="recJGC6" class="btn  bg-dark-subtle bg-dark-subtle bg-gradient m-1 rectangle">RECOMENDACIÓN JG:</div>
+                  <div id="celda6-hf" class="btn btn-success m-1 bg-gradient  square" >HF <br>VALOR</div>
+                  <div id="recHFC6" class="btn  bg-dark-subtle bg-dark-subtle bg-gradient m-1 rectangle">RECOMENDACIÓN HF:</div>
                 </div>
               </div>
             </div>
             <!-- Celda #7 -->
             <div class="col-md-6 col-sm-6">
-              <div class="card row-cols-2-2 ">
-                <div class="card-header tittle bg-dark bg-gradient "><h2 class="text-white">Celda 7</h2></div>
+              <div class="card row-cols-2-2 bg-light bg-gradient">
+                <div class="card-header tittle bg-dark-subtle bg-gradient"><h2 class="text-white">Celda 7</h2></div>
                 <div class="card-body bg-light">
-                  <div id="celda7-jg" class="btn btn-success m-1 square">JG <br>VALOR</div>
-                  <div id="recJGC7" class="btn btn-light m-1 rectangle">RECOMENDACIÓN JG:</div>
-                  <div id="celda7-hf" class="btn btn-success m-1 square" >HF <br>VALOR</div>
-                  <div id="recHFC7" class="btn btn-light m-1 rectangle">RECOMENDACIÓN HF:</div>
+                  <div id="celda7-jg" class="btn btn-success m-1 bg-gradient  square">JG <br>VALOR</div>
+                  <div id="recJGC7" class="btn bg-dark-subtle bg-gradient m-1 rectangle">RECOMENDACIÓN JG:</div>
+                  <div id="celda7-hf" class="btn btn-success m-1 bg-gradient  square" >HF <br>VALOR</div>
+                  <div id="recHFC7" class="btn bg-dark-subtle bg-gradient m-1 rectangle">RECOMENDACIÓN HF:</div>
                 </div>
               </div>
             </div>
 
             <!-- RO -->
             <div class="col-md-6 col-sm-6">
-              <div class="card row-cols-2-2 ">
-                <div class="card-header tittle bg-dark bg-gradient "><h2 class="text-white">RO GENERAL</h2></div>
+              <div class="card row-cols-2-2 bg-light bg-gradient rc">
+                <div class="card-header tittle bg-dark-subtle bg-gradient"><h2 class="text-white">RO GENERAL</h2></div>
                 <div class="card-body bg-light">
-                  <div id="valor-ro" class="btn btn-success m-1 square" >RO <br>VALOR</div>
-                  <div id="recRO" class="btn btn-light m-1 rectangleFULL">RECOMENDACIÓN RO:</div>
+                  <div id="valor-ro" class="btn btn-success bg-gradient m-1 square" >RO <br>VALOR</div>
+                  <div id="recRO" class="btn bg-dark-subtle bg-gradient m-1 rectangleFULL">RECOMENDACIÓN RO:</div>
                 </div>
               </div>
             </div>
@@ -115,7 +165,11 @@
       </div>
     </div>
   </div>
-  <script src="./src/assets/js/colorAndRec.js"></script>
+</div>
+
+
+
+  <script src="./src/assets/js/loginAuth.js"></script>
   <script src="./src/assets/js/dataInjection.js"></script>
   <script src="./src/assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="./src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

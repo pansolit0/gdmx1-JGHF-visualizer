@@ -56,17 +56,22 @@ p{
 
 }
 
+.rc{
+    width: 1000px;
+    height: 442px;
+}
+
 .rectangle {
     /* Initial size */
-    width: 230px;
-    height: 100px;
+    width: 210px;
+    height: 150px;
     max-width: 100%;
     /* Flex properties for centering content */
     display: flex;
 }
 
 .rectangleFULL {
-    width: 390px;
+    width: 3390px;
     height: 100px;
     max-width: 100%;
 }
@@ -74,7 +79,7 @@ p{
 .square {
     /* Initial size */
     width: 130px;
-    height: 140px;
+    height: 150px;
     /* Flex properties for centering content */
     display: flex;
     align-items: center;
@@ -82,6 +87,12 @@ p{
 }
 .texto-responsive {
     font-size: 18px; /* Tamaño predeterminado */
+    color: white;
+
+}
+
+.btn-danger{
+    background-color: #F44336;
 }
 
 @media (max-width: 768px) {
@@ -107,22 +118,45 @@ p{
         height: 280px;
     }
 }
-
-@media (max-width: 1366px) {
+@media (max-width: 1813px) {
     .square {
-        width: 130px;
-        height: 150px;
+        width: 120px;
+        height: 200px;
     }
     .texto-responsive {
         font-size: 15px; /* Para pantallas entre 782px y 1222px de ancho */
     }
     .rectangleFULL{
         width: 130px;
-        height: 180px;
+        height: 200px;
     }
     .rectangle {
-        width: 330px;
-        height: 280px;
+        width: 130px;
+        height: 200px;
+    }
+    .rc{
+        height: 976px;
+    }
+}
+
+@media (max-width: 1366px) {
+    .square {
+        width: 120px;
+        height: 200px;
+    }
+    .texto-responsive {
+        font-size: 15px; /* Para pantallas entre 782px y 1222px de ancho */
+    }
+    .rectangleFULL{
+        width: 130px;
+        height: 200px;
+    }
+    .rectangle {
+        width: 130px;
+        height: 200px;
+    }
+    .rc{
+        height: 976px;
     }
 }
 
@@ -130,6 +164,34 @@ p{
     .rectangle {
         width: 130px;
         height: 180px;
+    }
+
+}
+@media (max-width: 1199px) {
+    .square {
+        width: 160px;
+        height: 200px;
+    }
+    .texto-responsive {
+        font-size: 15px; /* Para pantallas entre 782px y 1222px de ancho */
+    }
+    .rectangleFULL{
+        width: 130px;
+        height: 200px;
+    }
+    .rectangle {
+        width: 170px;
+        height: 200px;
+    }
+    .rc{
+        height: 976px;
+    }
+}
+
+@media (max-width: 913px) {
+    .rectangle {
+        width: 140px;
+        height: 200px;
     }
 
 }
@@ -166,7 +228,7 @@ p{
     }
     .rectangle {
         width: 120px;
-        height: 180px;
+        height: 210px;
     }
 }
 
@@ -177,7 +239,7 @@ p{
         height: 130.5px; /* Promedio entre 80px y 85px, ajustado según la solicitud */
     }
     .texto-responsive {
-        font-size: 15px; /* Para tabletas y dispositivos más pequeños */
+        font-size: 15px; /* P ra tabletas y dispositivos más pequeños */
     }
     .rectangle {
         width: 340px;
