@@ -71,14 +71,14 @@ p{
 }
 
 .rectangleFULL {
-    width: 3390px;
-    height: 100px;
+    width: 210px;
+    height: 150px;
     max-width: 100%;
 }
 
 .square {
     /* Initial size */
-    width: 130px;
+    width: 145px;
     height: 150px;
     /* Flex properties for centering content */
     display: flex;
@@ -176,7 +176,7 @@ p{
         font-size: 15px; /* Para pantallas entre 782px y 1222px de ancho */
     }
     .rectangleFULL{
-        width: 130px;
+        width: 170px;
         height: 200px;
     }
     .rectangle {

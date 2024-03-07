@@ -1,0 +1,40 @@
+#chartContainer .card-body {
+    padding: 0; /* Esto ayuda a que los botones y el selector estén más cerca del encabezado y el gráfico */
+}
+
+.heightC #chart {
+    height: 500px; /* Ajusta la altura del gráfico como prefieras */
+}
+
+.custom-select {
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #444;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    appearance: none;
+    height: 38px; /* Ajusta para que coincida con la altura de tus botones */
+}
+
+.filaBotonesGrafico {
+    margin-bottom: 0; /* Reduce el espacio entre los botones y el gráfico */
+    width: 100%;
+}
+
+/* Flex crecerá igualmente para cada elemento hijo */
+.filaBotonesGrafico > div {
+    flex: 1;
+    padding: 0; /* Elimina el padding interno si lo prefieres */
+}
+
+/* Asegúrate de que los elementos dentro de filaBotonesGrafico ocupen todo el espacio horizontal */
+.filaBotonesGrafico > div {
+    padding: 0; /* Ajusta el padding para que los botones y el selector estén alineados y tengan el mismo tamaño */
+}
+
+/* Asegúrate de que los botones y el selector no tengan márgenes adicionales */
+.btn, .custom-select {
+    margin: 0;
+}

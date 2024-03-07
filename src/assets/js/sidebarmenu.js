@@ -7,7 +7,7 @@ File: js
 // ==============================================================
 // Auto select left navbar
 // ==============================================================
-$(function () {
+ $(function () {
     "use strict";
     var url = window.location + "";
     var path = url.replace(

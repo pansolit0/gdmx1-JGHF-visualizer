@@ -1,0 +1,86 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.full, .page-wrapper, .container-fluid, .card, .card-body, .table-responsive {
+    width: 100%; /* Full width */
+}
+
+.full, .card {
+    display: block; /* Display as a block */
+}
+
+.page-wrapper, .card, .card-body {
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+}
+
+.page-wrapper, .container-fluid, .card {
+    height: 100%; /* Full height */
+}
+
+.container-fluid, .card-body {
+    flex-grow: 1; /* Fill available space */
+}
+
+.card-header {
+    background-color: #333;
+    color: white;
+}
+
+.card-body {
+    padding: 0; /* Remove padding to make the table stick to the edges */
+}
+
+.table {
+    table-layout: auto; /* Adjust column width based on content */
+    margin: 0; /* Remove margin to stick to the edges */
+}
+
+.table th, .table td {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.table-responsive {
+    height: auto; /* Adjust height as needed */
+    overflow-x: auto; /* Horizontal scrolling if table is wider than screen */
+}
+
+.texto-responsive {
+    font-size: 1rem; /* Default text size */
+    color: white;
+}
+
+/* Media queries for text size and table padding adjustments on smaller devices */
+@media (max-width: 1200px) {
+    .table td, .table th {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .texto-responsive {
+        font-size: 0.875rem;
+    }
+    .table td, .table th {
+        padding: 0.3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .texto-responsive {
+        font-size: 0.75rem;
+    }
+    .table td, .table th {
+        padding: 0.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .table td, .table th {
+        padding: 0.1rem;
+    }
+}
