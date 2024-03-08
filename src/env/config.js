@@ -4,7 +4,8 @@ export const apiConfig = {
     promedioCatorce: 'https://gdmxapi.onrender.com/promedioCatorce',
     authLogin: 'https://gdmxapi.onrender.com/users/login',
     llenarTabla: 'https://gdmxapi.onrender.com/tabla',
-    llenarGraficos: 'https://gdmxapi.onrender.com/grafico'
+    llenarGraficos: 'https://gdmxapi.onrender.com/grafico',
+    api: 'wss://gdmxapi.onrender.com'
     //datosChart: 'http://localhost:3000/datosChart',
     //exportExcel: 'http://localhost:3000/exportExcel',
     //promedioCatorce: 'http://localhost:3000/promedioCatorce',

@@ -25,8 +25,8 @@ html, body {
 }
 
 .card-header {
-    background-color: #333;
-    color: white;
+    background-color: #04273D;
+    color: #04273D;
 }
 
 .card-body {
@@ -51,7 +51,7 @@ html, body {
 
 .texto-responsive {
     font-size: 1rem; /* Default text size */
-    color: white;
+    color: #04273D;
 }
 
 /* Media queries for text size and table padding adjustments on smaller devices */

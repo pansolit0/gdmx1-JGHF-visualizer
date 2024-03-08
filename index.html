@@ -9,8 +9,12 @@
   <link rel="stylesheet" href="./src/assets/css/operador.css" />
   <link rel="stylesheet" href="./src/assets/css/login.css" />
   <link rel="stylesheet" href="./src/assets/css/navbars.css" />
+  <link rel="stylesheet" href="./src/assets/css/chatbot.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,-25" />
-  <script type="module" src="./src/env/config.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+  <script type="module" src="./src/assets/js/chatUiController.js"></script>
+  <script type="module" src="https://gdmxapi.onrender.com/socket.io/socket.io.js"></script>
 
 </head>
 <body class="alert alert-secondary bg-info-subtle bg-gradient">
@@ -45,7 +49,7 @@
             </div>
 
             <div class="pt-1 mb-4">
-              <button class="btn btn-info btn-lg btn-block" id="boton-login" type="button">Iniciar Sesión</button>
+              <button class="btn btn-warning btn-lg btn-block" id="boton-login" type="button">Iniciar Sesión</button>
             </div>
             <p>No tienes cuenta?. <a  class="link-info">Habla con tu supervisor para que se te administre tu cuenta.</a></p>
           </form>
@@ -60,7 +64,7 @@
 </section>
 <div id="contenido-restringido">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark-subtle bg-gradient rounded-2">
+<nav class="navbar navbar-expand-lg navbar-dark sas2 bg-gradient rounded-2">
 
 
   <div class="container-fluid">
@@ -160,84 +164,84 @@
             <!-- Celda #1 -->
             <div class="col-md-6 col-sm-6">
               <div class="card row-cols-2-2 bg-light bg-gradient">
-                <div class="card-header tittle bg-dark-subtle bg-gradient "><h2 class="text-white">Celda 1</h2></div>
+                <div class="card-header tittle sas2 bg-gradient "><h2 class="text-white">Celda 1</h2></div>
                 <div class="card-body bg-light bg-gradient">
                   <div id="celda1-jg" class="btn btn-success bg-gradient m-1 square">JG<br>VALOR</div>
-                  <div id="recJGC1" class="btn bg-dark-subtle bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recJGC1" class="btn sas2 bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                   <div id="celda1-hf" class="btn btn-success bg-gradient m-1 square">HF<br></div>
-                  <div id="recHFC1" class="btn bg-dark-subtle bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recHFC1" class="btn sas2 bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                 </div>
               </div>
             </div>
             <!-- Celda #2 -->
             <div class="col-md-6 col-sm-6">
               <div class="card row-cols-2-2 bg-light bg-gradient">
-                <div class="card-header tittle bg-dark-subtle bg-gradient "><h2 class="text-white">Celda 2</h2></div>
+                <div class="card-header tittle sas2 bg-gradient "><h2 class="text-white">Celda 2</h2></div>
                 <div class="card-body bg-light">
                   <div id="celda2-jg" class="btn btn-success bg-gradient  m-1 square" >JG <br>VALOR</div>
-                  <div id="recJGC2" class="btn  bg-dark-subtle bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recJGC2" class="btn  sas2 bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                   <div id="celda2-hf" class="btn btn-success bg-gradient  m-1 square" >HF <br>VALOR</div>
-                  <div id="recHFC2" class="btn bg-dark-subtle bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recHFC2" class="btn sas2 bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                 </div>
               </div>
             </div>
             <!-- Celda #3 -->
             <div class="col-md-6 col-sm-6">
               <div class="card row-cols-2-2 bg-light bg-gradient">
-                <div class="card-header tittle bg-dark-subtle bg-gradient"><h2 class="text-white">Celda 3</h2></div>
+                <div class="card-header tittle sas2 bg-gradient"><h2 class="text-white">Celda 3</h2></div>
                 <div class="card-body bg-light">
                   <div id="celda3-jg" class="btn btn-success bg-gradient m-1 square" >JG <br>VALOR</div>
-                  <div id="recJGC3" class="btn  bg-dark-subtle bg-gradient m-1 rectangle "><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recJGC3" class="btn  sas2 bg-gradient m-1 rectangle "><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                   <div id="celda3-hf" class="btn btn-success bg-gradient m-1 square" >HF <br>VALOR</div>
-                  <div id="recHFC3" class="btn  bg-dark-subtle bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recHFC3" class="btn  sas2 bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                 </div>
               </div>
             </div>
             <!-- Celda #4 -->
             <div class="col-md-6 col-sm-6">
               <div class="card row-cols-2-2 bg-light bg-gradient">
-                <div class="card-header tittle bg-dark-subtle bg-gradient"><h2 class="text-white">Celda 4</h2></div>
+                <div class="card-header tittle sas2 bg-gradient"><h2 class="text-white">Celda 4</h2></div>
                 <div class="card-body bg-light">
                   <div id="celda4-jg" class="btn btn-success bg-gradient m-1 square" >JG <br>VALOR</div>
-                  <div id="recJGC4" class="btn  bg-dark-subtle bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recJGC4" class="btn  sas2 bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                   <div id="celda4-hf" class="btn btn-success bg-gradient  m-1 square" >HF <br>VALOR</div>
-                  <div id="recHFC4" class="btn  bg-dark-subtle bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recHFC4" class="btn  sas2 bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                 </div>
               </div>
             </div>
             <!-- Celda #5 -->
             <div class="col-md-6 col-sm-6">
               <div class="card row-cols-2-2 bg-light bg-gradient">
-                <div class="card-header tittle bg-dark-subtle bg-gradient"><h2 class="text-white">Celda 5</h2></div>
+                <div class="card-header tittle sas2 bg-gradient"><h2 class="text-white">Celda 5</h2></div>
                 <div class="card-body bg-light">
                   <div id="celda5-jg" class="btn btn-success bg-gradient  m-1 square" >JG<br>VALOR</div>
-                  <div id="recJGC5" class="btn  bg-dark-subtle bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recJGC5" class="btn  sas2 bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                   <div id="celda5-hf" class="btn btn-success bg-gradient  m-1 square" >HF <br>VALOR</div>
-                  <div id="recHFC5" class="btn  bg-dark-subtle bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recHFC5" class="btn  sas2 bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                 </div>
               </div>
             </div>
             <!-- Celda #6 -->
             <div class="col-md-6 col-sm-6">
               <div class="card row-cols-2-2 bg-light bg-gradient">
-                <div class="card-header tittle bg-dark-subtle bg-gradient"><h2 class="text-white">Celda 6</h2></div>
+                <div class="card-header tittle sas2 bg-gradient"><h2 class="text-white">Celda 6</h2></div>
                 <div class="card-body bg-light">
                   <div id="celda6-jg" class="btn btn-success  bg-gradient m-1 square" >JG <br>VALOR</div>
-                  <div id="recJGC6" class="btn  bg-dark-subtle bg-dark-subtle bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recJGC6" class="btn  sas2  bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                   <div id="celda6-hf" class="btn btn-success m-1 bg-gradient  square" >HF <br>VALOR</div>
-                  <div id="recHFC6" class="btn  bg-dark-subtle bg-dark-subtle bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recHFC6" class="btn  sas2  bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                 </div>
               </div>
             </div>
             <!-- Celda #7 -->
             <div class="col-md-6 col-sm-6">
               <div class="card row-cols-2-2 bg-light bg-gradient">
-                <div class="card-header tittle bg-dark-subtle bg-gradient"><h2 class="text-white">Celda 7</h2></div>
+                <div class="card-header tittle sas2 bg-gradient"><h2 class="text-white">Celda 7</h2></div>
                 <div class="card-body bg-light">
                   <div id="celda7-jg" class="btn btn-success m-1 bg-gradient  square">JG <br>VALOR</div>
-                  <div id="recJGC7" class="btn bg-dark-subtle bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recJGC7" class="btn sas2 bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                   <div id="celda7-hf" class="btn btn-success m-1 bg-gradient  square" >HF <br>VALOR</div>
-                  <div id="recHFC7" class="btn bg-dark-subtle bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recHFC7" class="btn sas2 bg-gradient m-1 rectangle"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                 </div>
               </div>
             </div>
@@ -245,10 +249,10 @@
             <!-- RO -->
             <div class="col-md-6 col-sm-6">
               <div class="card row-cols-2-2 bg-light bg-gradient rc">
-                <div class="card-header tittle bg-dark-subtle bg-gradient"><h2 class="text-white">RO GENERAL</h2></div>
+                <div class="card-header tittle sas2 bg-gradient"><h2 class="text-white">RO GENERAL</h2></div>
                 <div class="card-body bg-light row-cols-1">
                   <div id="valor-ro" class="btn btn-success bg-gradient m-1 square" >RO <br>VALOR</div>
-                  <div id="recRO" class="btn bg-dark-subtle bg-gradient m-1 rectangleFULL"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
+                  <div id="recRO" class="btn sas2 bg-gradient m-1 rectangleFULL"><p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p></div>
                 </div>
               </div>
             </div>
@@ -257,18 +261,42 @@
       </div>
     </div>
   </div>
+  
+  <!-- //chatbot -->
 
 
-  <script type="module" src="./src/assets/js/loginAuth.js"></script>
-  <script type="module" src="./src/assets/js/routesGuard.js"></script>
-  <script type="module" src="./src/assets/js/dataInjection.js"></script>
-  <script type="module" src="./src/assets/libs/jquery/dist/jquery.min.js"></script>
-  <script type="module" src="./src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script type="module" src="./src/assets/js/sidebarmenu.js"></script>
-  <script type="module" src="./src/assets/js/app.min.js"></script>
-  <script type="module" src="./src/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-  <script type="module" src="./src/assets/libs/simplebar/dist/simplebar.js"></script>
+<button class="chatbot-toggler bg-gradient">
+  <span class="material-symbols-rounded">mode_comment</span>
+  <span class="material-symbols-outlined">close</span>
+</button>
+<div class="chatbot bg-gradient">
+  <header>
+      <h2 class="text-white">Chatbot</h2>
+      <span class="close-btn material-symbols-outlined">close</span>
+  </header>
+  <ul class="chatbox">
+      <li class="chat incoming">
+          <span class="material-symbols-outlined">smart_toy</span>
+          <p>Hola, como estas? deseas saber algun porcentaje?</p>
+      </li>
+  </ul>
+  <div class="chat-input">
+      <textarea placeholder="Enter a message..." spellcheck="false" required></textarea>
+      <span id="send-btn" class="material-symbols-rounded">send</span>
+  </div>
+</div>
+
 </body>
 
+
+<script type="module" src="./src/assets/js/loginAuth.js"></script>
+<script type="module" src="./src/assets/js/routesGuard.js"></script>
+<script type="module" src="./src/assets/js/dataInjection.js"></script>
+<script type="module" src="./src/assets/libs/jquery/dist/jquery.min.js"></script>
+<script type="module" src="./src/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="./src/assets/js/sidebarmenu.js"></script>
+<script type="module" src="./src/assets/js/app.min.js"></script>
+<script type="module" src="./src/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+<script type="module" src="./src/assets/libs/simplebar/dist/simplebar.js"></script>
 
 </html>

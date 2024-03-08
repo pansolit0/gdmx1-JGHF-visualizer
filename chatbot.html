@@ -16,13 +16,16 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
     <script type="module" src="./src/assets/js/chatUiController.js"></script>
+    <script type="module" src="http://127.0.0.1:3000/socket.io/socket.io.js"></script>
     <script type="module" src="./src/env/config.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 </head>
 <body class="alert alert-secondary bg-info-subtle bg-gradient">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark-subtle bg-gradient rounded-2">
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg navbar-dark sas2 bg-gradient rounded-2">
 
 
     <div class="container-fluid">
@@ -139,19 +142,21 @@
     </div>
 </nav>
 
+<!-- Graficos -->
+
 <div class="d-flex justify-content-center mt-4"> <!-- Agrega mt-4 para mantener la distancia del navbar -->
     <div class="col-lg-11 col-md-11 col-sm-12" id="chartContainer">
         <div class="card bg-light bg-gradient">
-            <div class="card-header bg-dark-subtle bg-gradient text-center">
+            <div class="card-header sas bg-gradient text-center">
                 <h2 class="text-white" id="chartTitle">Celda</h2>
             </div>
             <div class="card-body">
                 <div class="row filaBotonesGrafico mt-4">
                     <div class="col p-2">
-                        <button type="button" class="btn bg-dark-subtle bg-gradient w-100 text-light" id="btnJG" ><p class="h2 text-light">JG</p></button>
+                        <button type="button" class="btn boton bg-gradient w-100 text-light" id="btnJG" ><p class="h2 text-light">JG</p></button>
                     </div>
                     <div class="col p-2">
-                        <button type="button" class="btn bg-dark-subtle bg-gradient w-100 text-light" id="btnHF"><p class="h2 text-light">HF</p></button>
+                        <button type="button" class="btn boton bg-gradient w-100 text-light" id="btnHF"><p class="h2 text-light">HF</p></button>
                     </div>
                     <div class="col p-2">
                         <select id="timeRangeSelector" class="custom-select w-100">
@@ -162,15 +167,17 @@
                     </div>
                 </div>
             </div>
-            <div id="chart" class="p-3 mt-4"></div> <!-- Agrega padding para separar el gráfico de los botones -->
+            <div id="chart" class="p-3 mt-4 sas"></div> <!-- Agrega padding para separar el gráfico de los botones -->
         </div>
     </div>
 </div>
 
+<!-- tabla -->
+
 <div class="d-flex justify-content-center mt-4"> <!-- Agrega mt-4 para mantener la distancia del navbar -->
     <div class="col-lg-11 col-md-11 col-sm-12">
         <div class="card bg-light bg-gradient">
-            <div class="card-header bg-dark-subtle bg-gradient text-center">
+            <div class="card-header sas bg-gradient text-center">
                 <h2 class="text-white" >Tabla de datos</h2>
             </div>
             <div class="h-50">
@@ -178,8 +185,8 @@
                     <div class="container-fluid">
                         <div class="row justify-content-center">
                             <div class="col-12 card-body">
-                                <div class="table-responsive bg-white" data-mdb-perfect-scrollbar="true" style="position: relative; height: 645px;">
-                                    <table class="table">
+                                <div class="table-responsive sas " data-mdb-perfect-scrollbar="true" style="position: relative; height: 645px;">
+                                    <table class="table text-dark">
                                         <thead>
                                         <tr>
                                             <th scope="col">JG</th>
@@ -211,19 +218,23 @@
     </div>
 </div>
 
-<button class="chatbot-toggler">
+
+<!-- //chatbot -->
+
+
+<button class="chatbot-toggler bg-gradient">
     <span class="material-symbols-rounded">mode_comment</span>
     <span class="material-symbols-outlined">close</span>
 </button>
-<div class="chatbot">
+<div class="chatbot bg-gradient">
     <header>
-        <h2>Chatbot</h2>
+        <h2 class="text-white">Chatbot</h2>
         <span class="close-btn material-symbols-outlined">close</span>
     </header>
     <ul class="chatbox">
         <li class="chat incoming">
             <span class="material-symbols-outlined">smart_toy</span>
-
+            <p>Hola, como estas? deseas saber algun porcentaje?</p>
         </li>
     </ul>
     <div class="chat-input">
@@ -234,6 +245,7 @@
 
 
 </body>
+
 <script type="module" src="./src/assets/js/chartController.js"></script>
 <script type="module" src="./src/assets/js/loginAuth.js" defer></script>
 <script type="module" src="./src/assets/js/routesGuard.js"></script>

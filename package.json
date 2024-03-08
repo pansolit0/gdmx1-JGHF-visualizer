@@ -13,7 +13,8 @@
   "dependencies": {
     "apexcharts": "^3.46.0",
     "bootstrap": "^5.2.3",
-    "jquery": "^3.7.1"
+    "jquery": "^3.7.1",
+    "socket.io": "^4.7.4"
   },
   "scripts": {
     "dev": "vite",

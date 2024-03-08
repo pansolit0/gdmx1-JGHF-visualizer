@@ -30,11 +30,12 @@ html, body {
 }
 
 .card-header {
-    background-color: #333;
+    background-color: #04273D;
     color: white;
 }
 
 .card-body {
+    background-color: white;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -91,6 +92,19 @@ p{
 
 }
 
+
+
+.sas{
+    background-color: white
+}
+
+.sas2{
+    background-color: #04273D;;
+}
+
+.boton{
+    background-color: #FFBC00;
+}
 .btn-danger{
     background-color: #F44336;
 }

@@ -90,33 +90,85 @@ async function inicializarGrafico(celda, rangoHoras = 24) {
             data: datos
         }, {
             name: 'Setpoint',
-            data: datosSetpoint
+            data: datosSetpoint,
+            color: '#00FF00',
         }],
         chart: {
             type: 'line',
             height: 550,
             animations: {
                 enabled: true
-            }
+            },
+            background: 'white',
+            toolbar: {
+                tools: {
+                    download: true,
+                    selection: true,
+                    zoom: true,
+                    zoomin: true,
+                    zoomout: true,
+                    pan: true,
+                    reset: true | '<img src="/static/icons/reset.png" width="20">',
+                    customIcons: []
+                },
+                autoSelected: 'zoom' 
+            },
         },
         xaxis: {
-            type: 'datetime'
+            type: 'datetime',
+            labels: {
+                style: {
+                    colors: '#000000' // Etiquetas del eje X en blanco
+                }
+            },
+            axisTicks: {
+                color: '#000000' // Ticks del eje X en blanco
+            },
+            axisBorder: {
+                color: '#000000' // Borde del eje X en blanco
+            }
+        },
+        yaxis: {
+            labels: {
+                style: {
+                    colors: '#000000' // Etiquetas del eje Y en blanco
+                }
+            },
+            axisTicks: {
+                color: '#000000' // Ticks del eje Y en blanco
+            },
+            axisBorder: {
+                color: '#000000' // Borde del eje Y en blanco
+            }
+        },
+        grid: {
+            borderColor: '#000000' // Color de las líneas de la cuadrícula en blanco
         },
         title: {
-            text: `Datos de las últimas ${rangoHoras} horas para celda ${numeroCelda}`
+            text: `Datos de las últimas ${rangoHoras} horas para celda ${numeroCelda}`,
+            style: {
+                color: '#000000' // Título en blanco
+            }
         },
         stroke: {
-            width: [2, 2]
+            width: [2, 2],
+            colors: ['#000000'] // Color de las líneas del gráfico en blanco (solo afecta a líneas no pertenecientes a datasets)
         },
         markers: {
             size: [4, 0]
         },
         tooltip: {
             shared: true,
-            intersect: false
+            intersect: false,
+            style: {
+                colors: ['#000000'] // Color del texto dentro del tooltip en blanco
+            }
         },
         legend: {
-            show: true
+            show: true,
+            labels: {
+                colors: '#000000' // Color del texto de la leyenda en blanco
+            }
         }
     };
 

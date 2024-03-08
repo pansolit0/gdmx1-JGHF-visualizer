@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO Frontend Test</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enviar Datos a Socket.IO</h1>
+    <div class="container">
+        <button id="sendData">Enviar Datos</button>
+        <div id="response"></div>
+    </div>
+
+    <script>
+        const socket = io('http://localhost:3000');
+
+        document.getElementById('sendData').addEventListener('click', function() {
+            const data = {
+                celda: 'celda_5',
+                metrica: 'jg', // Se asume que el backend procesará esta fecha según sea necesario
+                fecha: '2024-02-06 20:33:43' // Rango de horas fijo
+            };
+
+            socket.emit('solicitarDatosGrafico', data);
+        });
+
+        socket.on('datosGrafico', function(datos) {
+            document.getElementById('response').innerHTML = `<pre>${JSON.stringify(datos, null, 2)}</pre>`;
+        });
+
+        socket.on('errorDatos', function(error) {
+            document.getElementById('response').innerHTML = `<pre>${JSON.stringify(error, null, 2)}</pre>`;
+        });
+    </script>
+</body>
+</html>
