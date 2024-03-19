@@ -1,10 +1,11 @@
 import { apiConfig } from '../../env/config.js';
 import { isSessionValid } from './loginAuth.js';
-
+import alarmSoundSrc from '../sounds/alarm.mp3';
 
 const SPJG = [1.10, 1.10, 0.90, 0.90, 0.80, 0.70, 0.50];
-const SPHF = [30.00, 30.00, 40.00, 15.00, 30.00, 30.00, 40.00];
-const SPRO = 1150;
+const SPHF = [30.00, 30.00, 40.00, 45.00, 50.00, 60.00, 70.00];
+const SPRO = 1130;
+const alarmSound = new Audio(alarmSoundSrc);
 
 
 
@@ -42,7 +43,7 @@ function actualizarElementoJG(elemento, valor, celda) {
     if (elemento) {
         // Truncar el valor a dos decimales sin redondear
         const valorTruncado = Math.trunc(valor * 100) / 100;
-        elemento.innerHTML = `<h3>JG: ${valorTruncado.toFixed(2)}<br>-----</br> <span>SP:${SPJG[celda - 1]}</span></h3>`;
+        elemento.innerHTML = `<h5>JG: ${valorTruncado.toFixed(2)}<br>---</br> <span>SP:${SPJG[celda - 1]}</span></h5>`;
     }
 }
 
@@ -50,13 +51,10 @@ function actualizarElementoJG(elemento, valor, celda) {
 function actualizarElementoHF(elemento, valor, celda) {
     if (elemento) {
         // Asumiendo que HF debe ser un entero, se mantiene toFixed(0) para HF. Si HF también necesita mostrar decimales, ajusta de manera similar a JG.
-        elemento.innerHTML = `<h3>HF:${valor.toFixed(0)} <br>-----</br><span>SP: ${SPHF[celda - 1]}</span></h3>`;
+        elemento.innerHTML = `<h5>HF:${valor.toFixed(0)} <br>---</br><span>SP: ${SPHF[celda - 1]}</span></h5>`;
     }
 }
 
-
-
-let ultimosDatosValidos = {jg: Array(7).fill(0), hf: Array(7).fill(0)};
 
 
 function caudalJG(data, indiceCelda) {
@@ -86,8 +84,8 @@ function generarRecomendacion(diferencia, indiceCelda, tipo, data) {
             mensaje = `<p class="h5 texto-responsive"><strong>JG no se encuentra disponible en este momento.</strong></p>`;
         } else if (Math.abs(diferencia) > 0.1) {
             mensaje = (data.jg < setpoint) ?
-                `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Suba el flujo de aire 5% del valor que indica el flujómetro, observe y repita la acción si es necesario.</p>` :
-                `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Baje el flujo de aire 5% del valor que indica el flujómetro, observe y repita la acción si es necesario.</p>`;
+                `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> <br> aumentar aire en 5% c/r flujómetro y observar.</p>` :
+                `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> <br> disminuir aire en 5% c/r flujómetro y observar.</p>`;
         } else {
             mensaje = `<p class="h5 texto-responsive"><strong>No existen recomendaciones por el momento.</strong></p>`;
         }
@@ -96,8 +94,8 @@ function generarRecomendacion(diferencia, indiceCelda, tipo, data) {
             mensaje = `<p class="h5 texto-responsive"><strong>HF no se encuentra disponible en este momento.</strong></p>`;
         } else if (Math.abs(diferencia) > 0.1) {
             mensaje = diferencia < 0 ?
-                `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Abrir las válvulas de dardo recorriendo 5cm, observe y repita la acción si es necesario.</p>` :
-                `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> Cerrar las válvulas de dardo recorriendo 5cm, observe y repita la acción si es necesario.</p>`;
+                `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> <br> abrir válvulas 5 cm y observar.</p>` :
+                `<p class="h5 texto-responsive"><strong>ACCIÓN:</strong> <br> cerrar válvulas 5 cm y observar.</p>`;
         } else {
             mensaje = `<p class="h5 texto-responsive"><strong>No existen recomendaciones por el momento.</strong></p>`;
         }
@@ -110,7 +108,7 @@ function generarRecomendacion(diferencia, indiceCelda, tipo, data) {
         if (isSessionValid()) {
             recomendacionDiv.innerHTML = '<p class="h5 texto-responsive"><strong>Esperando Siguiente recomendación</strong></p>';
         }
-    }, 60000); // 120000 ms = 2 minutos
+    }, 180000); // 120000 ms = 2 minutos
 }
 
 
@@ -139,14 +137,44 @@ function evaluarYActualizarClases(data, indiceCelda) {
 }
 
 
-function actualizarClase(elemento, diferencia, tipo = '') {
-    elemento.classList.remove('btn-danger', 'btn-warning');
+function actualizarClase(elemento, diferencia) {
+    if (!elemento) return;
+    
+    elemento.classList.remove('btn-danger', 'btn-warning', 'blink');
+    
     if (diferencia > 0.2) {
         elemento.classList.add('btn-danger');
+        // Ahora pasamos mostrarPopup como callback a playAlarmSound
+        playAlarmSound(elemento, mostrarPopup);
     } else if (diferencia > 0.1) {
         elemento.classList.add('btn-warning');
     }
 }
+
+// Modificación de playAlarmSound para gestionar el loop y la duración
+function playAlarmSound(element, tipo) {
+    alarmSound.loop = true;
+    alarmSound.play().catch(error => console.error("Error al reproducir el sonido de la alarma:", error));
+    if (!element.classList.contains('blink')) {
+        element.classList.add('blink');
+    }
+    mostrarPopup(tipo);
+}
+
+function mostrarPopup(tipo) {
+    const popup = document.getElementById('alarmPopup');
+    const mensaje = document.getElementById('alarmPopupMensaje');
+    mensaje.innerHTML = `Se tomaron las acciones para la corrección de celdas.`;
+    popup.style.display = 'flex';
+}
+
+window.stopAlarmAndHidePopup = function() {
+    alarmSound.pause();
+    alarmSound.currentTime = 0;
+    alarmSound.loop = false;
+    document.querySelectorAll('.blink').forEach(element => element.classList.remove('blink'));
+    document.getElementById('alarmPopup').style.display = 'none';
+};
 
 
 function actualizarDatos() {
@@ -162,47 +190,47 @@ function actualizarDatos() {
 
 function actualizarRO() {
     let elementoRO = document.getElementById('valor-ro');
-    let recomendacionDiv = document.getElementById('recRO'); // Asegúrate de que este elemento existe en tu HTML
+    let recomendacionDiv = document.getElementById('recRO');
     if (!elementoRO || !recomendacionDiv) return;
 
     const datos = {celda: 'celda_1', columnas: ['ro']};
 
-    fetch(apiConfig.datosChart , {
+    fetch(apiConfig.datosChart, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(datos)
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const valorActualRO = data.ro;
+        elementoRO.innerHTML = `<h5>RO: ${valorActualRO}<br>---</br><span>SP: ${SPRO}</h5>`;
+        const diferenciaPorcentual = Math.abs(valorActualRO - SPRO) / SPRO;
+        
+        // Aplicar clase de parpadeo y reproducir sonido si la diferencia es mayor al 20%
+        if (diferenciaPorcentual > 0.2) {
+            if (!elementoRO.classList.contains('blink')) {
+                elementoRO.classList.add('blink');
+                playAlarmSound(elementoRO); // Se asegura de reproducir el sonido solo cuando comienza el parpadeo
             }
-            return response.json();
-        })
-        .then(data => {
-            const valorActualRO = data.ro;
-            elementoRO.innerHTML = `<h3>RO: ${(valorActualRO)}<br>-----</br><span>SP: ${SPRO}</h3>`; // Incluido setpoint
-            const diferenciaPorcentual = Math.abs(valorActualRO - SPRO) / SPRO;
-            const ajuste = (((diferenciaPorcentual * SPRO) * 100) / 2);
-
-            if (diferenciaPorcentual >= 0.1) {
-                let accion = valorActualRO > SPRO ? 'cerrar' : 'abrir';
-                let mensaje = `<p class="texto-responsive">Recomendación RO: Es recomendable <strong class="h5"><b>${accion}</b></Strong> la palanca un <strong class="h5"><b>${ajuste}%</b></strong>.</p>`;
-                recomendacionDiv.innerHTML = mensaje;
-            } else {
-                recomendacionDiv.innerHTML = '<p class="texto-responsive"><strong> RO: El valor de RO está dentro del rango aceptable.</strong></p>';
+        } else {
+            // Detener parpadeo y sonido si la diferencia es menor al 20%
+            if (elementoRO.classList.contains('blink')) {
+                elementoRO.classList.remove('blink');
+                alarmSound.pause();
+                alarmSound.currentTime = 0;
             }
-
-            // Temporizador para borrar la recomendación después de 1 minuto
-            setTimeout(() => {
-                recomendacionDiv.innerHTML = '<p class="texto-responsive"><strong>Esperando siguiente recomendación...</strong></p>';
-            }, 60000); // 60000 ms = 1 minuto
-        })
-        .catch(error => {
-            console.error('Error al hacer la solicitud:', error);
-        });
+        }
+    })
+    .catch(error => {
+        console.error('Error al hacer la solicitud:', error);
+    });
 }
+
 
 
 function manejarCheckbox(celda, tipo) {
@@ -234,14 +262,14 @@ function revisarEstadoRecomendaciones() {
     }
 }
 
+
+
 document.addEventListener('DOMContentLoaded', function () {
     let elementoRO = document.getElementById('valor-ro');
-    // Inicialización y carga de datos iniciales
     actualizarRO();
     actualizarDatos();
     setInterval(actualizarDatos, 300000); // 60000 milisegundos = 1 minuto
 
-    // Añadir event listeners a los checkboxes
     for (let i = 1; i <= 7; i++) {
         let checkboxJG = document.getElementById(`celda${i}-jg-recomendacion`);
         let checkboxHF = document.getElementById(`celda${i}-hf-recomendacion`);
@@ -250,7 +278,6 @@ document.addEventListener('DOMContentLoaded', function () {
         checkboxHF?.addEventListener('change', () => manejarCheckbox(i, 'hf'));
     }
 
-    // Revisar el estado de las recomendaciones al cargar la página
     revisarEstadoRecomendaciones();
 
     // Escuchar el evento loginExitoso para actualizar los datos automáticamente tras el inicio de sesión

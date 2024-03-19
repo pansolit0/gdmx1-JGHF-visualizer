@@ -3,7 +3,7 @@ import { apiConfig } from '../../env/config.js';
 let chartInstance = null;
 // Definición de setpoints para JG y HF
 let setpointsJG = [1.10, 1.10, 0.90, 0.90, 0.80, 0.70, 0.50];
-let setpointsHF = [30.00, 30.00, 40.00, 15.00, 30.00, 30.00, 40.00];
+let setpointsHF = [30.00, 30.00, 40.00, 45.00, 50.00, 60.00, 70.00];
 let setpoints = setpointsJG; // Setpoints iniciales
 let intervalId;
 let currentCelda = 'celda_1';

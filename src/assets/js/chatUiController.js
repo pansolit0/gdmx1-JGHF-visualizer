@@ -9,8 +9,8 @@ const chatInput = document.querySelector(".chat-input textarea");
 const sendChatBtn = document.querySelector(".chat-input span");
 
 const SPJG = [1.10, 1.10, 0.90, 0.90, 0.80, 0.70, 0.50];
-const SPHF = [30.00, 30.00, 40.00, 15.00, 30.00, 30.00, 40.00];
-const SPRO = 1150;
+const SPHF = [30.00, 30.00, 40.00, 45.00, 50.00, 60.00, 70.00];
+const SPRO = 1130;
 
 
 
